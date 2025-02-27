@@ -1,38 +1,31 @@
-from flask import Flask, render_template, request, send_file
-import yt_dlp
-import os
+import requests
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
-DOWNLOAD_FOLDER = "downloads"
-os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)  # Создаем папку для видео, если её нет
-
-def download_instagram_reel(url):
-    output_path = os.path.join(DOWNLOAD_FOLDER, '%(title)s.%(ext)s')
-    ydl_opts = {
-        'format': 'best',
-        'outtmpl': output_path,
-        'merge_output_format': 'mp4',
-    }
-
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=True)
-        filename = ydl.prepare_filename(info)
-        return filename  # Возвращаем путь к скачанному видео
+def download_instagram_reel(insta_url):
+    snapinsta_api = "https://snapinsta.app/action"
+    data = {"url": insta_url}
+    headers = {"User-Agent": "Mozilla/5.0"}
+    
+    response = requests.post(snapinsta_api, data=data, headers=headers)
+    if response.ok:
+        return response.text  # Здесь будет ссылка на скачивание видео
+    return None
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        video_url = request.form.get("video_url")
-        if video_url:
-            try:
-                file_path = download_instagram_reel(video_url)
-                return send_file(file_path, as_attachment=True)  # Отправляем файл пользователю
-            except Exception as e:
-                return f"Ошибка при загрузке: {e}"
-    
-    return render_template("index.html")
+        insta_url = request.form["url"]
+        video_url = download_instagram_reel(insta_url)
+        return f"<a href='{video_url}'>Скачать видео</a>" if video_url else "Ошибка!"
+
+    return '''
+        <form method="post">
+            <input type="text" name="url" placeholder="Вставьте ссылку на Reels">
+            <button type="submit">Скачать</button>
+        </form>
+    '''
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
-
+    app.run(debug=True)
