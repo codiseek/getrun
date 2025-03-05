@@ -48,14 +48,46 @@
         }
 
         #tab-instagram {
-    background-color: #6B7280; /* Серый цвет для кнопки */
-}
+            background-color: #6B7280; /* Серый цвет для кнопки */
+        }
 
+        .error-message {
+            display: none;
+            padding: 16px;
+            margin-top: 16px;
+            margin-bottom: 16px;
+            background-color: #f8d7da;
+            border-radius: 8px;
+            color: #721c24;
+            font-size: 16px;
+            font-weight: 500;
+            border: 1px solid #f5c6cb;
+            text-align: left;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        .error-message .error-icon {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            background-color: #f5c6cb;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            color: #721c24;
+            font-size: 14px;
+        }
     </style>
 
     <img src="{{ url_for('static', filename='logo.svg') }}" alt="GetRun Logo" class="logo-size mx-auto">
 
-    <div id="error-message" class="hidden text-red-500 mt-4"></div>
+    <div id="error-message" class="error-message">
+        <span class="error-icon">!</span>
+        <span id="error-text"></span>
+    </div>
 
     <div class="flex space-x-4 mb-4">
         <button onclick="switchTab('youtube')" id="tab-youtube" class="tab-btn bg-gray-500" data-link="/short">YouTube</button>
@@ -69,7 +101,6 @@
             <div class="relative">
                 <input type="text" id="url" name="url" placeholder="Enter URL" 
                 class="w-full p-3 border rounded-lg" oninput="togglePasteClear()">
-
                 <button type="button" id="pasteClearBtn" onclick="handlePasteClear()" 
                 class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white px-3 py-1 rounded">
                 Paste
@@ -80,60 +111,73 @@
     </div>
 
     <script>
+        document.getElementById('downloadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let url = document.getElementById('url').value.trim();
 
-document.getElementById('downloadForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    let url = document.getElementById('url').value.trim();
-    
-    if (!url) {
-        alert("Please enter a valid URL");
-        return;
-    }
+            // Проверка на правильность URL
+            if (!validateUrl(url)) {
+                document.getElementById('error-text').innerText = 'Ошибка! Поддерживаются ссылки типа:\n- https://www.instagram.com/p/код_видео\n- https://www.instagram.com/reel/код_видео\n- https://www.instagram.com/reels/код_видео\n- https://www.instagram.com/share/reels/код_видео';
+                document.getElementById('error-message').style.display = 'block';
+                return;
+            }
 
-    // Очищаем URL от лишних пробелов и символов
-    url = url.replace(/\s+/g, '');  // Удаление пробелов из URL
+            // Очищаем URL от лишних пробелов и символов
+            url = url.replace(/\s+/g, '');  // Удаление пробелов из URL
 
-    console.log("URL to send:", url);  // Логируем URL перед отправкой
+            console.log("URL to send:", url);  // Логируем URL перед отправкой
 
-    // Изменяем текст кнопки и добавляем анимацию загрузки
-    const downloadButton = document.getElementById('downloadButton');
-    downloadButton.innerHTML = '<div class="loading-button"><span>Идет скачивание, ожидайте</span><div class="spinner"></div></div>';
-    downloadButton.disabled = true;  // Деактивируем кнопку, чтобы предотвратить повторные нажатия
+            // Изменяем текст кнопки и добавляем анимацию загрузки, меняем цвет кнопки на красный
+            const downloadButton = document.getElementById('downloadButton');
+            downloadButton.innerHTML = '<div class="loading-button"><span>Идет скачивание, ожидайте</span><div class="spinner"></div></div>';
+            downloadButton.disabled = true;  // Деактивируем кнопку, чтобы предотвратить повторные нажатия
+            downloadButton.classList.remove('bg-green-500');
+            downloadButton.classList.add('bg-red-500'); // Меняем цвет на красный
 
-    fetch(`/download?url=${encodeURIComponent(url)}`)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to fetch video. Server error: ' + response.status);
+            fetch(`/download?url=${encodeURIComponent(url)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Сервис временно недоступен! Попробуйте позже! Ошибка: ' + response.status);
+                }
+                console.log("Response:", response);  // Логируем ответ
+                return response.blob();
+            })
+            .then(blob => {
+                if (blob.size === 0) {
+                    throw new Error('Video file is empty.');
+                }
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'video.mp4';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+
+                // Возвращаем текст на кнопку после завершения скачивания и восстанавливаем цвет
+                downloadButton.innerHTML = 'Download';
+                downloadButton.disabled = false;  // Включаем кнопку снова
+                downloadButton.classList.remove('bg-red-500');
+                downloadButton.classList.add('bg-green-500'); // Возвращаем зеленый цвет
+            })
+            .catch(error => {
+                document.getElementById('error-text').innerText = 'Хьюстон, у нас проблемы! ' + error.message;
+                document.getElementById('error-message').style.display = 'block';
+
+                // В случае ошибки возвращаем текст на кнопку и восстанавливаем цвет
+                downloadButton.innerHTML = 'Download';
+                downloadButton.disabled = false;
+                downloadButton.classList.remove('bg-red-500');
+                downloadButton.classList.add('bg-green-500'); // Возвращаем зеленый цвет
+            });
+        });
+
+        // Функция для проверки правильности URL
+        function validateUrl(url) {
+            const regex = /^(https:\/\/www\.instagram\.com\/(reels|p|share\/reel|reel)\/[A-Za-z0-9-_]+)/;
+            return regex.test(url);
         }
-        console.log("Response:", response);  // Логируем ответ
-        return response.blob();
-    })
-    .then(blob => {
-        if (blob.size === 0) {
-            throw new Error('Video file is empty.');
-        }
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'video.mp4';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-
-        // Возвращаем текст на кнопку после завершения скачивания
-        downloadButton.innerHTML = 'Download';
-        downloadButton.disabled = false;  // Включаем кнопку снова
-    })
-    .catch(error => {
-        document.getElementById('error-message').innerText = 'Error: ' + error.message;
-        document.getElementById('error-message').classList.remove('hidden');
-
-        // В случае ошибки возвращаем текст на кнопку
-        downloadButton.innerHTML = 'Download';
-        downloadButton.disabled = false;
-    });
-});
 
         function pasteLink() {
             navigator.clipboard.readText().then(text => {
