@@ -11,8 +11,11 @@ API_URL = "https://save-insta1.p.rapidapi.com/media"
 headers = {
     "x-rapidapi-key": API_KEY,
     "x-rapidapi-host": "save-insta1.p.rapidapi.com",
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
+
+response = requests.get(API_URL, headers=headers)
 
 # Функция для получения ссылки на видео
 def get_video_url(instagram_url):
