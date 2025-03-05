@@ -1,7 +1,9 @@
 import requests
 from flask import Flask, render_template, request, Response
+from flask_cors import CORS  # Импортируем CORS
 
 app = Flask(__name__)
+CORS(app)  # Разрешаем CORS для всех источников (можно настроить более детально)
 
 API_KEY = "ceb849cff8msh123f466bfb728a8p16578ajsn40f5d50ec450"
 API_URL = "https://save-insta1.p.rapidapi.com/media"
@@ -35,11 +37,6 @@ def get_video_url(instagram_url):
         print(f"Ошибка запроса: {e}")
         return None
     
-    
-    
-
-
-
 # Главная страница
 @app.route('/')
 def index():
@@ -55,7 +52,7 @@ def download_video():
     print(f"Received URL: {url}")
     
     # Форматируем URL, чтобы он всегда был в правильной форме
-    url = url.replace("https://www.instagram.com/reels/", "https://www.instagram.com/reel/")
+    url = url.replace("https://www.instagram.com/reels/", "https://www.instagram.com/reel/")  # Приводим к единому формату
     url = url.replace("https://www.instagram.com/p/", "https://www.instagram.com/reel/")
     url = url.replace("https://www.instagram.com/share/reel/", "https://www.instagram.com/reel/")
 
