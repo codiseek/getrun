@@ -16,6 +16,9 @@ headers = {
 def get_video_url(instagram_url):
     payload = { "url": instagram_url }
     try:
+
+        print(f"Sending request to API with URL: {instagram_url}")
+
         response = requests.post(API_URL, json=payload, headers=headers)
         response.raise_for_status()  # выбрасывает исключение при ошибке запроса
 
@@ -31,6 +34,11 @@ def get_video_url(instagram_url):
     except requests.exceptions.RequestException as e:
         print(f"Ошибка запроса: {e}")
         return None
+    
+    
+    
+
+
 
 # Главная страница
 @app.route('/')
@@ -48,6 +56,7 @@ def download_video():
     
     # Форматируем URL, чтобы он всегда был в правильной форме
     url = url.replace("https://www.instagram.com/reels/", "https://www.instagram.com/reel/")
+    url = url.replace("https://www.instagram.com/p/", "https://www.instagram.com/reel/")
     url = url.replace("https://www.instagram.com/share/reel/", "https://www.instagram.com/reel/")
 
     # Проверяем, что URL правильный
