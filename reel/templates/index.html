@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetRun - Reels Downloader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center h-screen">
+
+    <style>
+        .logo-size {
+            width: 200px;
+            height: auto;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .spinner {
+            border: 2px solid transparent;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #tab-instagram {
+    background-color: #6B7280; /* Серый цвет для кнопки */
+}
+
+    </style>
+
+    <img src="{{ url_for('static', filename='logo.svg') }}" alt="GetRun Logo" class="logo-size mx-auto">
+
+    <div id="error-message" class="hidden text-red-500 mt-4"></div>
+
+    <div class="flex space-x-4 mb-4">
+        <button onclick="switchTab('youtube')" id="tab-youtube" class="tab-btn bg-gray-500" data-link="/short">YouTube</button>
+        <button onclick="switchTab('instagram')" id="tab-instagram" class="tab-btn bg-gray-500" data-link="/reel">Instagram</button>
+        <button onclick="switchTab('threads')" id="tab-threads" class="tab-btn">Threads</button>
+    </div>
+
+    <div id="content" class="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+        <h1 class="text-2xl font-bold mb-4">GetRun - <span id="platform-title">Reels</span> Downloader</h1>
+        <form id="downloadForm" class="space-y-4">
+            <div class="relative">
+                <input type="text" id="url" name="url" placeholder="Enter URL" 
+                class="w-full p-3 border rounded-lg" oninput="togglePasteClear()">
+
+                <button type="button" id="pasteClearBtn" onclick="handlePasteClear()" 
+                class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white px-3 py-1 rounded">
+                Paste
+                </button>
+            </div>
+            <button type="submit" id="downloadButton" class="w-full bg-green-500 text-white font-bold p-4 rounded-lg">Download</button>
+        </form>
+    </div>
+
+    <script>
+
+document.getElementById('downloadForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let url = document.getElementById('url').value.trim();
+    
+    if (!url) {
+        alert("Please enter a valid URL");
+        return;
+    }
+
+    // Очищаем URL от лишних пробелов и символов
+    url = url.replace(/\s+/g, '');  // Удаление пробелов из URL
+
+    console.log("URL to send:", url);  // Логируем URL перед отправкой
+
+    // Изменяем текст кнопки и добавляем анимацию загрузки
+    const downloadButton = document.getElementById('downloadButton');
+    downloadButton.innerHTML = '<div class="loading-button"><span>Идет скачивание, ожидайте</span><div class="spinner"></div></div>';
+    downloadButton.disabled = true;  // Деактивируем кнопку, чтобы предотвратить повторные нажатия
+
+    fetch(`/download?url=${encodeURIComponent(url)}`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch video. Server error: ' + response.status);
+        }
+        console.log("Response:", response);  // Логируем ответ
+        return response.blob();
+    })
+    .then(blob => {
+        if (blob.size === 0) {
+            throw new Error('Video file is empty.');
+        }
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'video.mp4';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        // Возвращаем текст на кнопку после завершения скачивания
+        downloadButton.innerHTML = 'Download';
+        downloadButton.disabled = false;  // Включаем кнопку снова
+    })
+    .catch(error => {
+        document.getElementById('error-message').innerText = 'Error: ' + error.message;
+        document.getElementById('error-message').classList.remove('hidden');
+
+        // В случае ошибки возвращаем текст на кнопку
+        downloadButton.innerHTML = 'Download';
+        downloadButton.disabled = false;
+    });
+});
+
+        function pasteLink() {
+            navigator.clipboard.readText().then(text => {
+                document.getElementById('url').value = text;
+                togglePasteClear();
+            }).catch(err => {
+                console.error('Failed to read clipboard: ', err);
+            });
+        }
+
+        function togglePasteClear() {
+            const urlInput = document.getElementById('url');
+            const pasteClearBtn = document.getElementById('pasteClearBtn');
+
+            if (urlInput.value.trim() === "") {
+                pasteClearBtn.innerText = "Paste";
+                pasteClearBtn.onclick = handlePasteClear;
+                pasteClearBtn.classList.remove("bg-red-500");
+                pasteClearBtn.classList.add("bg-blue-500");
+            } else {
+                pasteClearBtn.innerText = "Clear";
+                pasteClearBtn.onclick = clearInput;
+                pasteClearBtn.classList.remove("bg-blue-500");
+                pasteClearBtn.classList.add("bg-red-500");
+            }
+        }
+
+        function handlePasteClear() {
+            if (document.getElementById('url').value.trim() === "") {
+                pasteLink();
+            } else {
+                clearInput();
+            }
+        }
+
+        function clearInput() {
+            document.getElementById('url').value = "";
+            togglePasteClear();
+        }
+
+        function switchTab(platform) {
+            const platformTitles = { youtube: "Shorts", instagram: "Reels", threads: "Threads" };
+            document.getElementById('platform-title').innerText = platformTitles[platform];
+
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-gray-500'));
+
+            const activeBtn = document.getElementById(`tab-${platform}`);
+            activeBtn.classList.add('bg-gray-500');
+            window.location.href = activeBtn.getAttribute('data-link');
+        }
+    </script>
+
+    <style>
+        .tab-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            background-color: #3b82f6;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .tab-btn:hover:not(.bg-gray-500) {
+            background-color: #2563eb;
+        }
+    </style>
+
+</body>
+</html>
