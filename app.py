@@ -15,7 +15,8 @@ API_URL = "https://instagram-post-reels-stories-downloader-api.p.rapidapi.com/in
 
 headers = {
     "x-rapidapi-key": API_KEY,
-    "x-rapidapi-host": "instagram-post-reels-stories-downloader-api.p.rapidapi.com"
+    "x-rapidapi-host": "instagram-post-reels-stories-downloader-api.p.rapidapi.com",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
 }
 
 # Функция для получения ссылки на видео
@@ -25,6 +26,11 @@ def get_video_url(instagram_url):
         
         params = {"url": instagram_url}
         response = requests.get(API_URL, headers=headers, params=params)
+        
+        logger.info(f"📡 API статус ответа: {response.status_code}")
+        logger.info(f"📏 Длина ответа: {len(response.content)} байт")
+        logger.info(f"🔠 Кодировка ответа: {response.encoding}")
+
         response.raise_for_status()  
         
         response_json = response.json()
