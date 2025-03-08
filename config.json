@@ -54,5 +54,12 @@
         "description": "Герб Совета Безопастности КР",
         "preview": "sovbez.jpg",
         "formats": "AI / PDF / SVG / JPG"
+    },
+    {
+        "id": 9,
+        "name": "kenesh.zip",
+        "description": "Герб Жогорку Кенеш",
+        "preview": "kenesh.jpg",
+        "formats": "AI / PDF / SVG / JPG"
     }
 ]
