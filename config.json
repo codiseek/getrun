@@ -61,5 +61,19 @@
         "description": "Герб Жогорку Кенеш",
         "preview": "kenesh.jpg",
         "formats": "AI / PDF / SVG / JPG"
+    },
+    {
+        "id": 10,
+        "name": "mvdur.zip",
+        "description": "Герб МВД УР (Реплика)",
+        "preview": "mvdur.jpg",
+        "formats": "AI / PDF / SVG / JPG"
+    },
+    {
+        "id": 11,
+        "name": "bator.zip",
+        "description": "ГЕРБ БАТОР",
+        "preview": "bator.jpg",
+        "formats": "AI / PDF / SVG / JPG"
     }
 ]

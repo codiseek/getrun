@@ -1,135 +1,174 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="theme-color" content="#000000"> <!-- Цвет верхней панели браузера -->
-        <meta name="mobile-web-app-capable" content="yes"> <!-- Разрешаем отображение как приложение -->
-        <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Для iOS -->
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- Стиль статусной строки на iOS -->
-        <meta name="apple-mobile-web-app-title" content="GETRUN">
-        <link rel="apple-touch-icon" href="/static/icon.png">
-        <link rel="icon" href="/static/icon.png">
-        <title>GETRUN</title>
-        <link rel="manifest" href="/static/manifest.json">
-        <script src="https://cdn.tailwindcss.com"></script>
-        
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000"> <!-- Цвет верхней панели браузера -->
+    <meta name="mobile-web-app-capable" content="yes"> <!-- Разрешаем отображение как приложение -->
+    <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Для iOS -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- Стиль статусной строки на iOS -->
+    <meta name="apple-mobile-web-app-title" content="GETRUN">
+    <link rel="apple-touch-icon" href="/static/icon.png">
+    <link rel="icon" href="/static/icon.png">
+    <title>GETRUN - Бесплатная векторная графика</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
-        let currentIndex = 0;
-        const filesPerPage = 6;
-        let allFiles = {{ files | tojson }}; // Получаем все файлы через Jinja (список всех файлов)
-    
-        function filterFiles(query) {
-            return allFiles.filter(file => file.description.toLowerCase().includes(query.toLowerCase()));
-        }
-    
-        function loadMoreFiles() {
-            const container = document.getElementById('file-container');
-            const searchQuery = document.getElementById('search-input').value;
-            const filteredFiles = filterFiles(searchQuery);
-            const nextFiles = filteredFiles.slice(currentIndex, currentIndex + filesPerPage);
-    
-            nextFiles.forEach(file => {
-                const fileDiv = document.createElement('div');
-                fileDiv.classList.add('file-box', 'bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'hover:shadow-xl', 'transition-all', 'duration-300');
-    
-                // Название поста (с верхним регистром, увеличенным размером на ПК и отцентрированное)
-                const description = document.createElement('p');
-                description.classList.add('text-lg', 'font-semibold', 'text-gray-700', 'mb-3', 'uppercase', 'text-center', 'sm:text-xl', 'lg:text-2xl');
-                description.textContent = file.description;
-    
-                const imageDiv = document.createElement('div');
-                imageDiv.classList.add('mb-4');
-                const image = document.createElement('img');
-                image.classList.add('rounded-lg', 'w-full');
-                image.src = "/static/previews/" + file.preview;
-                image.alt = "Preview";
-    
-                const downloadLink = document.createElement('a');
-                downloadLink.classList.add('download-btn', 'inline-block', 'bg-blue-500', 'text-white', 'py-2', 'px-4', 'rounded-lg', 'hover:bg-blue-600', 'transition-all');
-                downloadLink.href = "/uploads/" + file.name;
-                downloadLink.download = file.name;
-                downloadLink.textContent = 'Скачать';
+      let currentIndex = 0;
+      const filesPerPage = 6;
+      let allFiles = {{ files | tojson }}; // Получаем все файлы через Jinja (список всех файлов)
+      let filteredFiles = allFiles; // Для поиска будем фильтровать файлы, но не очищать основной список
+        
+      function filterFiles(query) {
+          return allFiles.filter(file => file.description.toLowerCase().includes(query.toLowerCase()));
+      }
 
-                // Добавляем формат
-                const formatsDiv = document.createElement('div');
-                formatsDiv.classList.add('text-sm', 'text-gray-500', 'ml-4', 'mt-2');
-                formatsDiv.textContent = file.formats || "Форматы не указаны";  // Показываем форматы или текст "Форматы не указаны"
+      function loadMoreFiles(filteredList) {
+          const container = document.getElementById('file-container');
+          const nextFiles = filteredList.slice(currentIndex, currentIndex + filesPerPage);
 
-                // Используем flexbox для выравнивания кнопки и текста форматов
-                const actionDiv = document.createElement('div');
-                actionDiv.classList.add('flex', 'items-center', 'justify-between', 'w-full', 'mt-4');
-                actionDiv.appendChild(downloadLink); // Кнопка скачать
-                actionDiv.appendChild(formatsDiv);  // Текст с форматами
+          nextFiles.forEach(file => {
+              const fileDiv = document.createElement('div');
+              fileDiv.classList.add('file-box', 'bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'hover:shadow-xl', 'transition-all', 'duration-300');
 
-                fileDiv.appendChild(description);
-                fileDiv.appendChild(imageDiv);
-                imageDiv.appendChild(image);
-                fileDiv.appendChild(actionDiv);  // Добавляем новый блок с кнопкой и форматами
+              // Название поста (с верхним регистром, увеличенным размером на ПК и отцентрированное)
+              const description = document.createElement('p');
+              description.classList.add('text-lg', 'font-semibold', 'text-gray-700', 'mb-3', 'uppercase', 'text-center', 'sm:text-xl', 'lg:text-2xl');
+              description.textContent = file.description;
+
+              const imageDiv = document.createElement('div');
+              imageDiv.classList.add('mb-4');
+              const image = document.createElement('img');
+              image.classList.add('rounded-lg', 'w-full');
+              image.src = "/static/previews/" + file.preview;
+              image.alt = "Preview";
+
+              const downloadLink = document.createElement('a');
+              downloadLink.classList.add('download-btn', 'inline-block', 'bg-blue-500', 'text-white', 'py-2', 'px-4', 'rounded-lg', 'hover:bg-blue-600', 'transition-all');
+              downloadLink.href = "/uploads/" + file.name;
+              downloadLink.download = file.name;
+              downloadLink.textContent = 'Скачать';
+
+              // Добавляем формат
+              const formatsDiv = document.createElement('div');
+              formatsDiv.classList.add('text-sm', 'text-gray-500', 'ml-4', 'mt-2');
+              formatsDiv.textContent = file.formats || "Форматы не указаны";  // Показываем форматы или текст "Форматы не указаны"
+
+              // Используем flexbox для выравнивания кнопки и текста форматов
+              const actionDiv = document.createElement('div');
+              actionDiv.classList.add('flex', 'items-center', 'justify-between', 'w-full', 'mt-4');
+              actionDiv.appendChild(downloadLink); // Кнопка скачать
+              actionDiv.appendChild(formatsDiv);  // Текст с форматами
+
+              fileDiv.appendChild(description);
+              fileDiv.appendChild(imageDiv);
+              imageDiv.appendChild(image);
+              fileDiv.appendChild(actionDiv);  // Добавляем новый блок с кнопкой и форматами
+
+              container.appendChild(fileDiv);
+          });
+
+          currentIndex += filesPerPage;
+          if (currentIndex >= filteredList.length) {
+              document.getElementById('load-more-btn').style.display = 'none';
+          }
+      }
+
+      function searchFiles() {
+    const searchInput = document.getElementById('search-input');
+    const notification = document.getElementById('notification');
+    const noResultsNotification = document.getElementById('no-results');
+    const loadMoreButton = document.getElementById('load-more-btn');
     
-                container.appendChild(fileDiv);
-            });
-    
-            currentIndex += filesPerPage;
-            if (currentIndex >= filteredFiles.length) {
-                document.getElementById('load-more-btn').style.display = 'none';
-            }
+    // Проверяем, если поле ввода пустое
+    if (searchInput.value.trim() === "") {
+        // Показываем уведомление о пустом поле
+        notification.classList.remove('hidden');
+        noResultsNotification.classList.add('hidden'); // Скрываем уведомление об отсутствии результатов
+        loadMoreButton.style.display = 'block';  // Показываем кнопку "Загрузить еще"
+        setTimeout(() => {
+            notification.classList.add('hidden');
+        }, 3000);
+    } else {
+        // Если поле не пустое, скрываем уведомления и начинаем поиск
+        notification.classList.add('hidden');
+        noResultsNotification.classList.add('hidden'); // Скрываем уведомление об отсутствии результатов
+        currentIndex = 0;  // Сброс текущего индекса для нового поиска
+
+        // Фильтруем файлы по запросу
+        filteredFiles = filterFiles(searchInput.value);
+        const container = document.getElementById('file-container');
+        container.innerHTML = ''; // Очищаем контейнер перед новым поиском
+
+        // Если не найдено файлов, показываем уведомление и скрываем кнопку "Загрузить еще"
+        if (filteredFiles.length === 0) {
+            noResultsNotification.classList.remove('hidden');
+            loadMoreButton.style.display = 'none';  // Скрываем кнопку "Загрузить еще"
+        } else {
+            noResultsNotification.classList.add('hidden'); // Скрываем уведомление об отсутствии результатов
+            loadMoreButton.style.display = 'block';  // Показываем кнопку "Загрузить еще"
+            loadMoreFiles(filteredFiles);  // Загружаем отфильтрованные файлы
         }
-    
-        function searchFiles() {
-            currentIndex = 0;
-            const container = document.getElementById('file-container');
-            container.innerHTML = '';
-            loadMoreFiles();
-        }
-    
-        window.onload = function() {
-            loadMoreFiles();
-        };
+    }
+}
+
+
+
+      window.onload = function() {
+          loadMoreFiles(allFiles);  // Загружаем все файлы при загрузке страницы
+      };
     </script>
-</head>
-<body class="bg-white text-gray-800 font-sans">
+  </head>
+  <body class="bg-white text-gray-800 font-sans">
     <h1 class="text-4xl text-center py-10 font-semibold">
         <a href="{{ url_for('index') }}">
             <img src="static/logo.svg" class="max-w-[250px] mx-auto" />
         </a>
     </h1>
 
-<!-- Поле поиска -->
-<div class="container mx-auto px-4 mb-6 text-center">
-    <div class="relative w-full sm:w-1/2 lg:w-1/3 mx-auto">
-        <input id="search-input" type="text" placeholder="Поиск по описанию" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-16" />
-        <button onclick="searchFiles()" class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-all">
-            Найти
-        </button>
+    <!-- Поле поиска -->
+    <div class="container mx-auto px-4 mb-6 text-center">
+        <div class="relative w-full sm:w-1/2 lg:w-1/3 mx-auto">
+            <input id="search-input" type="text" placeholder="Поиск по названию" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-16" />
+            <button onclick="searchFiles()" class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white py-2 px-5 rounded-lg hover:bg-blue-600 transition-all">
+                Найти
+            </button>
+        </div>
     </div>
-</div>
 
+   <!-- Уведомление внутри контейнера -->
 <div class="container mx-auto px-4">
-    <div id="file-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-    <!-- Кнопка для загрузки дополнительных файлов -->
-    <div class="text-center mt-8">
-        <button id="load-more-btn" onclick="loadMoreFiles()" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-all mb-6">
-            Загрузить еще
-        </button>
+    <div id="notification" class="hidden bg-red-500 text-white text-center py-2 px-4 rounded-lg mt-4 max-w-xl mx-auto">
+        Пожалуйста, введите текст для поиска.
+    </div>
+    <!-- Уведомление об отсутствии результатов -->
+    <div id="no-results" class="hidden bg-yellow-500 text-white text-center py-2 px-4 rounded-lg mt-4 max-w-xl mx-auto">
+        К сожалению, по вашему запросу ничего не найдено.
     </div>
 </div>
 
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}").then(function(registration) {
-                console.log('Service Worker registered with scope:', registration.scope);
-            }).catch(function(error) {
-                console.log('Service Worker registration failed:', error);
+    <div class="container mx-auto px-4">
+        <div id="file-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <!-- Кнопка для загрузки дополнительных файлов -->
+        <div class="text-center mt-8">
+            <button id="load-more-btn" onclick="loadMoreFiles(filteredFiles)" class="bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-all mb-6">
+                Загрузить еще
+            </button>
+        </div>
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}").then(function(registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }).catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                });
             });
-        });
-    }
-</script>
-
-
-</body>
-
+        }
+    </script>
+  </body>
 </html>
