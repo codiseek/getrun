@@ -1,96 +1,96 @@
-import logging
-import requests
-from flask import Flask, render_template, request, Response
-from flask_cors import CORS  
+import os
+import json
+from flask import Flask, request, render_template, redirect, url_for, send_from_directory
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-CORS(app)  
+UPLOAD_FOLDER = 'uploads'
+PREVIEW_FOLDER = 'static/previews'
+CONFIG_FILE = 'config.json'
+PASSWORD = '0000'
 
-# Настройка логирования
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(PREVIEW_FOLDER, exist_ok=True)
 
-API_KEY = "ceb849cff8msh123f466bfb728a8p16578ajsn40f5d50ec450"
-API_URL = "https://instagram-post-reels-stories-downloader-api.p.rapidapi.com/instagram/"
-
-headers = {
-    "x-rapidapi-key": API_KEY,
-    "x-rapidapi-host": "instagram-post-reels-stories-downloader-api.p.rapidapi.com",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
-}
-
-# Функция для получения ссылки на видео
-def get_video_url(instagram_url):
+def load_config():
+    if not os.path.exists(CONFIG_FILE):
+        return []
     try:
-        logger.info(f"🔍 Отправка запроса на API с URL: {instagram_url}")
-        
-        params = {"url": instagram_url}
-        response = requests.get(API_URL, headers=headers, params=params)
-        
-        logger.info(f"📡 API статус ответа: {response.status_code}")
-        logger.info(f"📏 Длина ответа: {len(response.content)} байт")
-        logger.info(f"🔠 Кодировка ответа: {response.encoding}")
+        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+            data = f.read().strip()
+            return json.loads(data) if data else []
+    except json.JSONDecodeError:
+        return []
 
-        response.raise_for_status()  
-        
-        response_json = response.json()
-        logger.info(f"📜 API Response: {response_json}")
-        
-        if response_json.get("success") and "data" in response_json:
-            medias = response_json["data"].get("medias", [])
-            if medias and isinstance(medias, list):
-                video_url = medias[0]["url"]
-                logger.info(f"✅ Найдена ссылка на видео: {video_url}")
-                return video_url
-        
-        logger.warning("⚠ Ошибка: Не удалось получить ссылку на видео.")
-        return None
-    except requests.exceptions.RequestException as e:
-        logger.error(f"❌ Ошибка запроса: {e}")
-        return None
+def save_config(data):
+    with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
 
-# Главная страница
-@app.route('/')
+@app.route("/admin", methods=["GET", "POST"])
+def admin():
+    if request.args.get("password") != PASSWORD:
+        return "Доступ запрещён", 403
+    
+    if request.method == "POST":
+        file = request.files.get("file")
+        preview = request.files.get("preview")
+        description = request.form.get("description", "")
+        
+        if file and file.filename.endswith(".zip"):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(filepath)
+            
+            preview_filename = ""
+            if preview and preview.filename:
+                preview_filename = secure_filename(preview.filename)
+                preview.save(os.path.join(PREVIEW_FOLDER, preview_filename))
+            
+            files = load_config()
+            files.append({
+                "name": filename,
+                "description": description,
+                "preview": preview_filename
+            })
+            save_config(files)
+            
+            return redirect(url_for("admin", password=PASSWORD))
+    
+    files = load_config()
+    return render_template("admin.html", files=files, password=PASSWORD)
+
+@app.route("/delete/<filename>", methods=["POST"])
+def delete(filename):
+    if request.form.get("password") != PASSWORD:
+        return "Доступ запрещён", 403
+
+    files = load_config()
+    file_to_delete = next((f for f in files if f["name"] == filename), None)
+
+    if file_to_delete:
+        preview_filename = file_to_delete.get("preview")
+        if preview_filename:
+            preview_path = os.path.join(PREVIEW_FOLDER, preview_filename)
+            if os.path.exists(preview_path):
+                os.remove(preview_path)  # Удаляем превью, если оно есть
+
+    files = [f for f in files if f["name"] != filename]
+    save_config(files)
+
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    return redirect(url_for("admin", password=PASSWORD))
+
+@app.route("/")
 def index():
-    return render_template('index.html')
+    files = load_config()
+    return render_template("index.html", files=files)
 
-# Страница скачивания
-@app.route('/download', methods=['GET'])
-def download_video():
-    url = request.args.get('url')
-    if not url:
-        logger.warning("⚠ Не передан URL в запросе")
-        return "Please provide a valid URL", 400
-
-    logger.info(f"📥 Полученный URL: {url}")
-    
-    # Приведение URL к единому формату
-    url = url.replace("https://www.instagram.com/reels/", "https://www.instagram.com/reel/")  
-    url = url.replace("https://www.instagram.com/p/", "https://www.instagram.com/reel/")
-    url = url.replace("https://www.instagram.com/share/reel/", "https://www.instagram.com/reel/")
-
-    if not url.startswith("https://www.instagram.com/reel/"):
-        logger.warning("⚠ Некорректный формат URL")
-        return "Invalid Instagram Reels URL format", 400
-
-    video_url = get_video_url(url)
-    if not video_url:
-        return "Failed to retrieve video URL", 500
-
-    try:
-        logger.info(f"📡 Скачивание видео с URL: {video_url}")
-        video_response = requests.get(video_url, stream=True)
-        video_response.raise_for_status()
-        
-        logger.info("✅ Видео успешно загружено")
-        return Response(video_response.iter_content(chunk_size=1024),
-                        content_type='video/mp4',
-                        status=200,
-                        headers={'Content-Disposition': 'attachment; filename="video.mp4"'})
-    
-    except requests.exceptions.RequestException as e:
-        logger.error(f"❌ Ошибка загрузки видео: {e}")
-        return f"Failed to download video: {e}", 500
+@app.route("/uploads/<filename>")
+def download(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 if __name__ == "__main__":
     app.run(debug=True)

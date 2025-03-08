@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админка - GETRUN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-gray-800 font-sans">
+    <h1 class="text-4xl text-center py-10 font-semibold">Админка - GETRUN</h1>
+    <div class="container mx-auto px-4 max-w-[850px]">
+        <!-- Форма для загрузки файла -->
+        <form action="{{ url_for('admin', password='0000') }}" method="post" enctype="multipart/form-data" class="form-box bg-white p-6 rounded-lg shadow-lg mb-8">
+            <!-- Первая форма: Выберите файл ZIP -->
+            <label for="file" class="text-sm font-semibold text-gray-700 mb-2 block">Выберите файл ZIP</label>
+            <input type="file" name="file" accept=".zip" required class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="file">
+        
+            <!-- Вторая форма: Описание файла -->
+            <input type="text" name="description" placeholder="Описание файла" required class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        
+            <!-- Третья форма: Выберите превью -->
+            <label for="preview" class="text-sm font-semibold text-gray-700 mb-2 block">Выберите превью</label>
+            <input type="file" name="preview" accept="image/*" required class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="preview">
+            
+            <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-all duration-300">Загрузить файл</button>
+        </form>
+        
+
+       <!-- Список загруженных файлов -->
+<div class="file-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% for file in files %}
+    <div class="file-box bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+        <span class="text-lg font-semibold mb-4">{{ file.description }}</span>
+        
+        <!-- Изображение превью -->
+        <img class="rounded-lg w-[150px] h-[150px] object-cover mb-4" src="/static/previews/{{ file.preview }}" alt="Preview">
+
+        <span class="text-sm mb-4">{{ file.name }}</span>
+        
+        <!-- Кнопка удаления -->
+        <form action="{{ url_for('delete', filename=file.name) }}" method="post" style="display:inline;">
+            <input type="hidden" name="password" value="0000">
+            <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-all">Удалить</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+
+    </div>
+</body>
+</html>
