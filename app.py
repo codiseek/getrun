@@ -2,6 +2,7 @@ import os
 import json
 from flask import Flask, request, render_template, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
+import datetime
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
@@ -26,6 +27,15 @@ def save_config(data):
     with open(CONFIG_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
+# Главная страница
+@app.route("/")
+def index():
+    # Загружаем все файлы для главной страницы
+    files = load_config()
+    # Сортируем по ID, чтобы новые файлы были в начале
+    files = sorted(files, key=lambda x: x['id'], reverse=True)
+    return render_template("index.html", files=files)  # Отображаем главную страницу
+
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if request.args.get("password") != PASSWORD:
@@ -35,6 +45,7 @@ def admin():
         file = request.files.get("file")
         preview = request.files.get("preview")
         description = request.form.get("description", "")
+        formats = request.form.get("formats", "")
         
         if file and file.filename.endswith(".zip"):
             filename = secure_filename(file.filename)
@@ -47,17 +58,23 @@ def admin():
                 preview.save(os.path.join(PREVIEW_FOLDER, preview_filename))
             
             files = load_config()
+            new_id = len(files) + 1  # ID для нового файла
             files.append({
+                "id": new_id,  # Добавляем id
                 "name": filename,
                 "description": description,
-                "preview": preview_filename
+                "preview": preview_filename,
+                "formats": formats  # Добавляем поле форматов
             })
             save_config(files)
             
             return redirect(url_for("admin", password=PASSWORD))
     
     files = load_config()
+    files = sorted(files, key=lambda x: x['id'], reverse=True)  # Сортируем по ID, новые файлы сверху
     return render_template("admin.html", files=files, password=PASSWORD)
+
+
 
 @app.route("/delete/<filename>", methods=["POST"])
 def delete(filename):
@@ -82,11 +99,6 @@ def delete(filename):
         os.remove(file_path)
 
     return redirect(url_for("admin", password=PASSWORD))
-
-@app.route("/")
-def index():
-    files = load_config()
-    return render_template("index.html", files=files)
 
 @app.route("/uploads/<filename>")
 def download(filename):

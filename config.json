@@ -1,42 +1,58 @@
 [
     {
+        "id": 1,
         "name": "gerb_kr.zip",
         "description": "Герб Кыргызской Республики",
-        "preview": "gerb_kr.jpg"
+        "preview": "gerb_kr.jpg",
+        "formats": "AI / PDF / SVG / JPG"
     },
     {
+        "id": 2,
         "name": "gknb_9.zip",
         "description": "Герб ГКНБ 9 Служба (Реплика)",
-        "preview": "gknb_9.jpg"
+        "preview": "gknb_9.jpg",
+        "formats": "AI / PDF / SVG / JPG"
     },
     {
+        "id": 3,
         "name": "prokuratura.zip",
         "description": "Герб Прокуратура КР",
-        "preview": "prokuratura.jpg"
+        "preview": "prokuratura.jpg",
+        "formats": "AI / PDF / SVG / JPG"
     },
     {
+        "id": 4,
         "name": "gknb.zip",
         "description": "Герб ГКНБ - УКМК КР",
-        "preview": "gknb.jpg"
+        "preview": "gknb.jpg",
+        "formats": "AI / PDF / SVG / JPG"
     },
     {
+        "id": 5,
         "name": "mvd.zip",
         "description": "Герб МВД КР",
-        "preview": "mvd.jpg"
+        "preview": "mvd.jpg",
+        "formats": "AI / PDF / SVG / JPG"
     },
     {
+        "id": 6,
         "name": "sbnon.zip",
         "description": "Герб СБНОН КР",
-        "preview": "sbnon.jpg"
+        "preview": "sbnon.jpg",
+        "formats": "AI / PDF / SVG / JPG"
     },
     {
+        "id": 7,
         "name": "nalog.zip",
         "description": "Герб Налоговой Службы КР",
-        "preview": "nalog.jpg"
+        "preview": "nalog.jpg",
+        "formats": "AI / PDF / SVG / JPG"
     },
     {
+        "id": 8,
         "name": "sovbez.zip",
         "description": "Герб Совета Безопастности КР",
-        "preview": "sovbez.jpg"
+        "preview": "sovbez.jpg",
+        "formats": "AI / PDF / SVG / JPG"
     }
 ]

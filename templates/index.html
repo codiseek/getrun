@@ -6,67 +6,73 @@
     <title>GETRUN</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        let currentIndex = 0; // Текущий индекс, который определяет, сколько блоков показывать
-        const filesPerPage = 6; // Количество файлов для загрузки за раз
+        let currentIndex = 0;
+        const filesPerPage = 6;
         let allFiles = {{ files | tojson }}; // Получаем все файлы через Jinja (список всех файлов)
-
-        // Функция для фильтрации файлов по описанию
+    
         function filterFiles(query) {
-            // Фильтруем файлы по описанию, делая поиск нечувствительным к регистру
             return allFiles.filter(file => file.description.toLowerCase().includes(query.toLowerCase()));
         }
-
-        // Функция для загрузки файлов на страницу
+    
         function loadMoreFiles() {
             const container = document.getElementById('file-container');
-            const searchQuery = document.getElementById('search-input').value; // Получаем значение из поля поиска
-            const filteredFiles = filterFiles(searchQuery); // Получаем отфильтрованные файлы
-            const nextFiles = filteredFiles.slice(currentIndex, currentIndex + filesPerPage); // Загружаем очередную порцию
-
+            const searchQuery = document.getElementById('search-input').value;
+            const filteredFiles = filterFiles(searchQuery);
+            const nextFiles = filteredFiles.slice(currentIndex, currentIndex + filesPerPage);
+    
             nextFiles.forEach(file => {
                 const fileDiv = document.createElement('div');
                 fileDiv.classList.add('file-box', 'bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'hover:shadow-xl', 'transition-all', 'duration-300');
-
+    
                 const description = document.createElement('p');
                 description.classList.add('text-lg', 'font-semibold', 'text-gray-700', 'mb-3');
                 description.textContent = file.description;
-
+    
                 const imageDiv = document.createElement('div');
                 imageDiv.classList.add('mb-4');
                 const image = document.createElement('img');
                 image.classList.add('rounded-lg', 'w-full');
                 image.src = "/static/previews/" + file.preview;
                 image.alt = "Preview";
-
+    
                 const downloadLink = document.createElement('a');
                 downloadLink.classList.add('download-btn', 'inline-block', 'bg-blue-500', 'text-white', 'py-2', 'px-4', 'rounded-lg', 'hover:bg-blue-600', 'transition-all');
                 downloadLink.href = "/uploads/" + file.name;
                 downloadLink.download = file.name;
                 downloadLink.textContent = 'Скачать';
 
+                // Добавляем формат
+                const formatsDiv = document.createElement('div');
+                formatsDiv.classList.add('text-sm', 'text-gray-500', 'ml-4', 'mt-2');
+                formatsDiv.textContent = file.formats || "Форматы не указаны";  // Показываем форматы или текст "Форматы не указаны"
+
+                // Используем flexbox для выравнивания кнопки и текста форматов
+                const actionDiv = document.createElement('div');
+                actionDiv.classList.add('flex', 'items-center', 'justify-between', 'w-full', 'mt-4');
+                actionDiv.appendChild(downloadLink); // Кнопка скачать
+                actionDiv.appendChild(formatsDiv);  // Текст с форматами
+
                 fileDiv.appendChild(description);
                 fileDiv.appendChild(imageDiv);
                 imageDiv.appendChild(image);
-                fileDiv.appendChild(downloadLink);
-
+                fileDiv.appendChild(actionDiv);  // Добавляем новый блок с кнопкой и форматами
+    
                 container.appendChild(fileDiv);
             });
-
-            currentIndex += filesPerPage; // Обновляем текущий индекс
+    
+            currentIndex += filesPerPage;
             if (currentIndex >= filteredFiles.length) {
-                document.getElementById('load-more-btn').style.display = 'none'; // Скрываем кнопку, если больше нет файлов
+                document.getElementById('load-more-btn').style.display = 'none';
             }
         }
-
-        // Функция для обработки события поиска
+    
         function searchFiles() {
-            currentIndex = 0; // Сбрасываем индекс, чтобы начать с первой страницы при новом поиске
+            currentIndex = 0;
             const container = document.getElementById('file-container');
-            container.innerHTML = ''; // Очищаем контейнер от предыдущих результатов
-            loadMoreFiles(); // Загружаем файлы, соответствующие поисковому запросу
+            container.innerHTML = '';
+            loadMoreFiles();
         }
-
-        // Загружаем первые блоки при загрузке страницы
+    
         window.onload = function() {
             loadMoreFiles();
         };
@@ -77,8 +83,6 @@
         <a href="{{ url_for('index') }}">
             <img src="static/logo.svg" class="max-w-[250px] mx-auto" />
         </a>
-        
-        
     </h1>
 
 <!-- Поле поиска -->
@@ -91,18 +95,15 @@
     </div>
 </div>
 
+<div class="container mx-auto px-4">
+    <div id="file-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-
-
-    <div class="container mx-auto px-4">
-        <div id="file-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-        <!-- Кнопка для загрузки дополнительных файлов -->
-        <div class="text-center mt-8">
-            <button id="load-more-btn" onclick="loadMoreFiles()" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-all mb-6">
-                Загрузить еще
-            </button>
-        </div>
+    <!-- Кнопка для загрузки дополнительных файлов -->
+    <div class="text-center mt-8">
+        <button id="load-more-btn" onclick="loadMoreFiles()" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-all mb-6">
+            Загрузить еще
+        </button>
     </div>
+</div>
 </body>
 </html>
