@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         let currentIndex = 0; // Текущий индекс, который определяет, сколько блоков показывать
-        const filesPerPage = 5; // Количество файлов для загрузки за раз
+        const filesPerPage = 6; // Количество файлов для загрузки за раз
         let allFiles = {{ files | tojson }}; // Получаем все файлы через Jinja (список всех файлов)
 
         // Функция для фильтрации файлов по описанию

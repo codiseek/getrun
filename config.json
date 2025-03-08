@@ -13,5 +13,30 @@
         "name": "prokuratura.zip",
         "description": "Герб Прокуратура КР",
         "preview": "prokuratura.jpg"
+    },
+    {
+        "name": "gknb.zip",
+        "description": "Герб ГКНБ - УКМК КР",
+        "preview": "gknb.jpg"
+    },
+    {
+        "name": "mvd.zip",
+        "description": "Герб МВД КР",
+        "preview": "mvd.jpg"
+    },
+    {
+        "name": "sbnon.zip",
+        "description": "Герб СБНОН КР",
+        "preview": "sbnon.jpg"
+    },
+    {
+        "name": "nalog.zip",
+        "description": "Герб Налоговой Службы КР",
+        "preview": "nalog.jpg"
+    },
+    {
+        "name": "sovbez.zip",
+        "description": "Герб Совета Безопастности КР",
+        "preview": "sovbez.jpg"
     }
 ]

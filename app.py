@@ -7,7 +7,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 PREVIEW_FOLDER = 'static/previews'
 CONFIG_FILE = 'config.json'
-PASSWORD = '0000'
+PASSWORD = 'x0000'
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PREVIEW_FOLDER, exist_ok=True)
