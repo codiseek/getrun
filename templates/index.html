@@ -24,8 +24,9 @@
                 const fileDiv = document.createElement('div');
                 fileDiv.classList.add('file-box', 'bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'hover:shadow-xl', 'transition-all', 'duration-300');
     
+                // Название поста (с верхним регистром, увеличенным размером на ПК и отцентрированное)
                 const description = document.createElement('p');
-                description.classList.add('text-lg', 'font-semibold', 'text-gray-700', 'mb-3');
+                description.classList.add('text-lg', 'font-semibold', 'text-gray-700', 'mb-3', 'uppercase', 'text-center', 'sm:text-xl', 'lg:text-2xl');
                 description.textContent = file.description;
     
                 const imageDiv = document.createElement('div');
