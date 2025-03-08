@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GETRUN</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#000000"> <!-- Цвет верхней панели браузера -->
+        <meta name="mobile-web-app-capable" content="yes"> <!-- Разрешаем отображение как приложение -->
+        <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Для iOS -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- Стиль статусной строки на iOS -->
+        <meta name="apple-mobile-web-app-title" content="GETRUN">
+        <link rel="apple-touch-icon" href="/static/icon.png">
+        <link rel="icon" href="/static/icon.png">
+        <title>GETRUN</title>
+        <link rel="manifest" href="/static/manifest.json">
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/static/sw.js').then(function(registration) {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    }).catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+                });
+            }
+        </script>
+        
+
     <script>
         let currentIndex = 0;
         const filesPerPage = 6;
