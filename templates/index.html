@@ -13,18 +13,6 @@
         <title>GETRUN</title>
         <link rel="manifest" href="/static/manifest.json">
         <script src="https://cdn.tailwindcss.com"></script>
-
-        <script>
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('/static/sw.js').then(function(registration) {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                    }).catch(function(error) {
-                        console.log('Service Worker registration failed:', error);
-                    });
-                });
-            }
-        </script>
         
 
     <script>
@@ -128,5 +116,19 @@
         </button>
     </div>
 </div>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/static/sw.js').then(function(registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+            }).catch(function(error) {
+                console.log('Service Worker registration failed:', error);
+            });
+        });
+    }
+</script>
+
 </body>
+
 </html>
