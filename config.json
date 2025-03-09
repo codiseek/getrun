@@ -286,5 +286,14 @@
         "svg": "ornament_5.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
+    },
+    {
+        "id": 33,
+        "name": "issik_ata.zip",
+        "description": "Герб Ысык-Ата району",
+        "preview": "issik_ata.jpg",
+        "svg": "issik_ata.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
     }
 ]
