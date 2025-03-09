@@ -367,5 +367,14 @@
         "svg": "temir_jolu.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
+    },
+    {
+        "id": 42,
+        "name": "ornament_8.zip",
+        "description": "Орнаменты КР/КЗ",
+        "preview": "ornament_8.jpg",
+        "svg": "ornament_8.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
     }
 ]
