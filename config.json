@@ -268,5 +268,23 @@
         "svg": "ornament_3.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
+    },
+    {
+        "id": 31,
+        "name": "ornament_4.zip",
+        "description": "Орнамент для пряжки №4",
+        "preview": "ornament_4.jpg",
+        "svg": "ornament_4.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 32,
+        "name": "ornament_5.zip",
+        "description": "Орнамент для пряжки №5",
+        "preview": "ornament_5.jpg",
+        "svg": "ornament_5.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
     }
 ]
