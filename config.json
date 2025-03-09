@@ -295,5 +295,14 @@
         "svg": "issik_ata.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
+    },
+    {
+        "id": 34,
+        "name": "ornament_6.zip",
+        "description": "Орнамент круглый №6",
+        "preview": "ornament_6.jpg",
+        "svg": "ornament_6.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
     }
 ]
