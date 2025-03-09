@@ -34,7 +34,13 @@ def index():
     files = load_config()
     # Сортируем по ID, чтобы новые файлы были в начале
     files = sorted(files, key=lambda x: x['id'], reverse=True)
-    return render_template("index.html", files=files)  # Отображаем главную страницу
+
+     # Получаем последний ID и суммарное количество скачиваний
+    last_id = files[0]['id'] if files else 0
+    total_downloads = sum(file.get('downloads', 0) for file in files)
+    return render_template("index.html", files=files, last_id=last_id, total_downloads=total_downloads)
+
+
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():

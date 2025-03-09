@@ -29,7 +29,7 @@
         "description": "Герб ГКНБ - УКМК КР",
         "preview": "gknb.jpg",
         "formats": "AI / PDF / SVG / JPG",
-        "downloads": 0
+        "downloads": 1
     },
     {
         "id": 5,
@@ -101,6 +101,14 @@
         "description": "Герб Город Бишкек",
         "preview": "bishkek.jpg",
         "formats": "AI / PDF / SVG / JPG",
-        "downloads": 0
+        "downloads": 3
+    },
+    {
+        "id": 14,
+        "name": "institut.zip",
+        "description": "Герб КНУ Юридический институт",
+        "preview": "institut.jpg",
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 1
     }
 ]

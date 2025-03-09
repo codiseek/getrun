@@ -157,25 +157,35 @@ fileDiv.appendChild(actionDiv);
       </a>
     </h1>
 
-    <!-- Поле поиска -->
-    <div class="container mx-auto px-4 mb-6 text-center">
-      <div class="relative w-full sm:w-1/2 lg:w-1/3 mx-auto">
-        <input id="search-input" type="text" placeholder="Поиск по названию" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-16" />
-        <button onclick="searchFiles()" class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white py-2 px-5 rounded-lg hover:bg-blue-600 transition-all">
-          Найти
-        </button>
-      </div>
+   <!-- Поле поиска -->
+<div class="container mx-auto px-4 mb-6 text-center">
+    <div class="relative w-full sm:w-1/2 lg:w-1/3 mx-auto">
+      <input id="search-input" type="text" placeholder="Поиск по названию" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-16" />
+      <button onclick="searchFiles()" class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white py-2 px-5 rounded-lg hover:bg-blue-600 transition-all">
+        Найти
+      </button>
     </div>
-
-    <!-- Уведомления -->
-    <div class="container mx-auto px-4">
-      <div id="notification" class="hidden bg-red-500 text-white text-center py-2 px-4 rounded-lg mt-4 max-w-xl mx-auto">
-        Пожалуйста, введите текст для поиска.
-      </div>
-      <div id="no-results" class="hidden bg-yellow-500 text-white text-center py-2 px-4 rounded-lg mt-4 max-w-xl mx-auto">
-        К сожалению, по вашему запросу ничего не найдено.
-      </div>
+  </div>
+  
+  <!-- Информация о файлах и скачиваниях -->
+<div class="container mx-auto px-4 text-center mb-6">
+    <p class="text-lg text-gray-700">
+      Всего векторов: <span class="font-semibold">{{ last_id }}</span>
+      <span class="ml-6">Всего скачиваний: <span class="font-semibold">{{ total_downloads }}</span></span>
+    </p>
+  </div>
+  
+  
+  <!-- Уведомления -->
+  <div class="container mx-auto px-4">
+    <div id="notification" class="hidden bg-red-500 text-white text-center py-2 px-4 rounded-lg mt-4 max-w-xl mx-auto">
+      Пожалуйста, введите текст для поиска.
     </div>
+    <div id="no-results" class="hidden bg-yellow-500 text-white text-center py-2 px-4 rounded-lg mt-4 max-w-xl mx-auto">
+      К сожалению, по вашему запросу ничего не найдено.
+    </div>
+  </div>
+  
 
     <!-- Контейнер файлов -->
     <div class="container mx-auto px-4">
