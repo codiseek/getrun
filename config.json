@@ -86,5 +86,13 @@
         "preview": "bator.jpg",
         "formats": "AI / PDF / SVG / JPG",
         "downloads": 0
+    },
+    {
+        "id": 12,
+        "name": "skorpion.zip",
+        "description": "Герб Спецназ Скорпион",
+        "preview": "skorpion.jpg",
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     }
 ]

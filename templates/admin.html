@@ -42,6 +42,9 @@
 
                 <!-- Форматы -->
                 <span class="text-sm text-gray-500 mb-4">{{ file.formats or 'Форматы не указаны' }}</span>
+
+                 <!-- Скачивания -->
+                 <span class="text-sm text-gray-500 mb-4">Скачиваний: {{ file.downloads}}</span>
                 
                 <!-- Кнопка удаления -->
                 <form action="{{ url_for('delete', filename=file.name) }}" method="post" style="display:inline;">
