@@ -16,139 +16,160 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
-      let currentIndex = 0;
-      const filesPerPage = 6;
-      let allFiles = {{ files | tojson }}; // Получаем все файлы через Jinja (список всех файлов)
-      let filteredFiles = allFiles; // Для поиска будем фильтровать файлы, но не очищать основной список
-        
-      function filterFiles(query) {
-        return allFiles.filter(file => file.description.toLowerCase().includes(query.toLowerCase()));
-      }
-
-      function loadMoreFiles(filteredList) {
-        const container = document.getElementById('file-container');
-        const nextFiles = filteredList.slice(currentIndex, currentIndex + filesPerPage);
-
-        nextFiles.forEach(file => {
-          const fileDiv = document.createElement('div');
-          fileDiv.classList.add('file-box', 'bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'hover:shadow-xl', 'transition-all', 'duration-300');
-
-          // Название поста
-          const description = document.createElement('p');
-          description.classList.add('text-lg', 'font-semibold', 'text-gray-700', 'mb-3', 'uppercase', 'text-center', 'sm:text-xl', 'lg:text-2xl');
-          description.textContent = file.description;
-
-          // Изображение
-          const imageDiv = document.createElement('div');
-          imageDiv.classList.add('mb-4');
-          const image = document.createElement('img');
-          image.classList.add('rounded-lg', 'w-full');
-          image.src = "/static/previews/" + file.preview;
-          image.alt = "Preview";
-
-       // Кнопка для скачивания
-const downloadLink = document.createElement('a');
-downloadLink.classList.add('download-btn', 'inline-block', 'bg-blue-500', 'text-white', 'py-2', 'px-4', 'rounded-lg', 'hover:bg-blue-600', 'transition-all');
-downloadLink.href = "/download/" + file.id;  // Используем новый маршрут для скачивания с ID файла
-downloadLink.download = file.name;
-downloadLink.textContent = 'Скачать';
-
-// Контейнер для кнопки и информации о скачивании (с иконкой)
-const actionDiv = document.createElement('div');
-actionDiv.classList.add('flex', 'items-center', 'justify-between', 'w-full', 'mt-4');  // Выравнивание с justify-between
-
-// Сначала добавляем кнопку для скачивания
-const leftDiv = document.createElement('div');
-leftDiv.classList.add('flex', 'items-center', 'space-x-4');  // flex для кнопки и счетчика, space-x-4 для отступов между элементами
-leftDiv.appendChild(downloadLink);
-
-// Иконка загрузки
-const downloadInfo = document.createElement('div');
-downloadInfo.classList.add('flex', 'items-center', 'text-sm', 'text-gray-500');
-
-// Иконка загрузки
-const downloadIcon = document.createElement('i');
-downloadIcon.classList.add('fas', 'fa-download', 'mr-2');  // Иконка загрузки
-downloadInfo.appendChild(downloadIcon);
-
-// Текст с количеством скачиваний
-const downloadsDiv = document.createElement('span');
-downloadsDiv.textContent = file.downloads || 0;  // Количество скачиваний
-downloadInfo.appendChild(downloadsDiv);
-
-// Добавляем иконку и счетчик в левый блок
-leftDiv.appendChild(downloadInfo);
-
-// Контейнер для форматов (с текстом или значением по умолчанию)
-const formatsDiv = document.createElement('span');
-formatsDiv.classList.add('text-sm', 'text-gray-500');
-formatsDiv.textContent = file.formats || 'Форматы не указаны';  // Если форматы не указаны, выводим текст "Форматы не указаны"
-
-// Добавляем блок форматов в правую сторону
-const rightDiv = document.createElement('div');
-rightDiv.classList.add('ml-auto');  // Выравнивание вправо
-rightDiv.appendChild(formatsDiv);
-
-// Добавляем все элементы в основной контейнер
-actionDiv.appendChild(leftDiv);
-actionDiv.appendChild(rightDiv);
-
-// Добавляем остальные элементы в файл
-fileDiv.appendChild(description);
-fileDiv.appendChild(imageDiv);
-imageDiv.appendChild(image);
-fileDiv.appendChild(actionDiv);
-
-
-
-          // Добавляем файл в контейнер
-          container.appendChild(fileDiv);
-        });
-
-        currentIndex += filesPerPage;
-        if (currentIndex >= filteredList.length) {
-          document.getElementById('load-more-btn').style.display = 'none';
+        let currentIndex = 0;
+        const filesPerPage = 6;
+        let allFiles = {{ files | tojson }}; // Получаем все файлы через Jinja (список всех файлов)
+        let filteredFiles = allFiles; // Для поиска будем фильтровать файлы, но не очищать основной список
+      
+        function filterFiles(query) {
+          return allFiles.filter(file => file.description.toLowerCase().includes(query.toLowerCase()));
         }
-      }
-
-      function searchFiles() {
-        const searchInput = document.getElementById('search-input');
-        const notification = document.getElementById('notification');
-        const noResultsNotification = document.getElementById('no-results');
-        const loadMoreButton = document.getElementById('load-more-btn');
-        
-        // Проверяем, если поле ввода пустое
-        if (searchInput.value.trim() === "") {
-          notification.classList.remove('hidden');
-          noResultsNotification.classList.add('hidden');
-          loadMoreButton.style.display = 'block';
-          setTimeout(() => {
-            notification.classList.add('hidden');
-          }, 3000);
-        } else {
-          notification.classList.add('hidden');
-          noResultsNotification.classList.add('hidden');
-          currentIndex = 0;
-
-          filteredFiles = filterFiles(searchInput.value);
+      
+        function loadMoreFiles(filteredList) {
           const container = document.getElementById('file-container');
-          container.innerHTML = '';
-
-          if (filteredFiles.length === 0) {
-            noResultsNotification.classList.remove('hidden');
-            loadMoreButton.style.display = 'none';
-          } else {
-            noResultsNotification.classList.add('hidden');
-            loadMoreButton.style.display = 'block';
-            loadMoreFiles(filteredFiles);
+          const nextFiles = filteredList.slice(currentIndex, currentIndex + filesPerPage);
+      
+          nextFiles.forEach(file => {
+            const fileDiv = document.createElement('div');
+            fileDiv.classList.add('file-box', 'bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'hover:shadow-xl', 'transition-all', 'duration-300');
+      
+            // Название поста
+            const description = document.createElement('p');
+            description.classList.add('text-lg', 'font-semibold', 'text-gray-700', 'mb-3', 'uppercase', 'text-center', 'sm:text-xl', 'lg:text-2xl');
+            description.textContent = file.description;
+      
+            // Изображение
+            const imageDiv = document.createElement('div');
+            imageDiv.classList.add('mb-4');
+            const image = document.createElement('img');
+            image.classList.add('rounded-lg', 'w-full');
+            image.src = "/static/previews/" + file.preview;
+            image.alt = "Preview";
+      
+            // Кнопка для скачивания
+            const downloadLink = document.createElement('button');
+            downloadLink.classList.add('download-btn', 'inline-block', 'bg-blue-500', 'text-white', 'py-2', 'px-4', 'rounded-lg', 'hover:bg-blue-600', 'transition-all');
+            downloadLink.textContent = 'Скачать';
+            downloadLink.onclick = function() {
+              showDownloadPopup(file); // Показать всплывающее окно с информацией о скачивании
+            };
+      
+            // Контейнер для кнопки и информации о скачивании (с иконкой)
+            const actionDiv = document.createElement('div');
+            actionDiv.classList.add('flex', 'items-center', 'justify-between', 'w-full', 'mt-4');  // Выравнивание с justify-between
+      
+            // Сначала добавляем кнопку для скачивания
+            const leftDiv = document.createElement('div');
+            leftDiv.classList.add('flex', 'items-center', 'space-x-4');  // flex для кнопки и счетчика, space-x-4 для отступов между элементами
+            leftDiv.appendChild(downloadLink);
+      
+            // Иконка загрузки
+            const downloadInfo = document.createElement('div');
+            downloadInfo.classList.add('flex', 'items-center', 'text-sm', 'text-gray-500');
+      
+            // Иконка загрузки
+            const downloadIcon = document.createElement('i');
+            downloadIcon.classList.add('fas', 'fa-download', 'mr-2');  // Иконка загрузки
+            downloadInfo.appendChild(downloadIcon);
+      
+            // Текст с количеством скачиваний
+            const downloadsDiv = document.createElement('span');
+            downloadsDiv.textContent = file.downloads || 0;  // Количество скачиваний
+            downloadInfo.appendChild(downloadsDiv);
+      
+            // Добавляем иконку и счетчик в левый блок
+            leftDiv.appendChild(downloadInfo);
+      
+            // Добавляем блок форматов в правую сторону
+            const formatsDiv = document.createElement('span');
+            formatsDiv.classList.add('text-sm', 'text-gray-500');
+            formatsDiv.textContent = file.formats || 'Форматы не указаны';  // Если форматы не указаны, выводим текст "Форматы не указаны"
+      
+            // Добавляем блок форматов в правую сторону
+            const rightDiv = document.createElement('div');
+            rightDiv.classList.add('ml-auto');  // Выравнивание вправо
+            rightDiv.appendChild(formatsDiv);
+      
+            // Добавляем все элементы в основной контейнер
+            actionDiv.appendChild(leftDiv);
+            actionDiv.appendChild(rightDiv);
+      
+            // Добавляем остальные элементы в файл
+            fileDiv.appendChild(description);
+            fileDiv.appendChild(imageDiv);
+            imageDiv.appendChild(image);
+            fileDiv.appendChild(actionDiv);
+      
+            // Добавляем файл в контейнер
+            container.appendChild(fileDiv);
+          });
+      
+          currentIndex += filesPerPage;
+          if (currentIndex >= filteredList.length) {
+            document.getElementById('load-more-btn').style.display = 'none';
           }
         }
-      }
+      
+        function searchFiles() {
+          const searchInput = document.getElementById('search-input');
+          const notification = document.getElementById('notification');
+          const noResultsNotification = document.getElementById('no-results');
+          const loadMoreButton = document.getElementById('load-more-btn');
+          
+          // Проверяем, если поле ввода пустое
+          if (searchInput.value.trim() === "") {
+            notification.classList.remove('hidden');
+            noResultsNotification.classList.add('hidden');
+            loadMoreButton.style.display = 'block';
+            setTimeout(() => {
+              notification.classList.add('hidden');
+            }, 3000);
+          } else {
+            notification.classList.add('hidden');
+            noResultsNotification.classList.add('hidden');
+            currentIndex = 0;
+      
+            filteredFiles = filterFiles(searchInput.value);
+            const container = document.getElementById('file-container');
+            container.innerHTML = '';
+      
+            if (filteredFiles.length === 0) {
+              noResultsNotification.classList.remove('hidden');
+              loadMoreButton.style.display = 'none';
+            } else {
+              noResultsNotification.classList.add('hidden');
+              loadMoreButton.style.display = 'block';
+              loadMoreFiles(filteredFiles);
+            }
+          }
+        }
+      
+        // Функция для отображения всплывающего окна с информацией о скачивании
+        function showDownloadPopup(file) {
+          const popup = document.getElementById('download-popup');
+          const fileName = document.getElementById('file-name');
+          fileName.textContent = file.description;
+          popup.classList.remove('hidden'); // Показываем попап
+      
+          const downloadButton = document.getElementById('download-button');
+          downloadButton.href = "/download/" + file.id; // Устанавливаем ссылку для скачивания
+          downloadButton.download = file.name;
+        }
+      
+        function closePopup() {
+          const popup = document.getElementById('download-popup');
+          popup.classList.add('hidden'); // Скрываем попап
+        }
+      
+        // Загружаем файлы при первоначальной загрузке
+        window.onload = function() {
+          loadMoreFiles(allFiles);
+        };
+      
+      </script>
+        
 
-      window.onload = function() {
-        loadMoreFiles(allFiles);
-      };
-    </script>
+
   </head>
   <body class="bg-white text-gray-800 font-sans">
     <h1 class="text-4xl text-center py-10 font-semibold">
@@ -185,19 +206,72 @@ fileDiv.appendChild(actionDiv);
       К сожалению, по вашему запросу ничего не найдено.
     </div>
   </div>
-  
+
 
     <!-- Контейнер файлов -->
     <div class="container mx-auto px-4">
-      <div id="file-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <div id="file-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  
+        <!-- Кнопка для загрузки дополнительных файлов -->
+        <div class="text-center mt-8">
+          <button id="load-more-btn" onclick="loadMoreFiles(filteredFiles)" class="bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-all mb-6">
+            Загрузить еще
+          </button>
+        </div>
+      </div>
+  
+     <!-- Всплывающее окно для скачивания -->
+<div id="download-popup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-lg max-w-sm w-full relative">
+      <!-- Кнопка закрытия в правом верхнем углу всплывающего окна -->
+      <button onclick="closePopup()" class="absolute top-1 right-3 text-gray-600">
+        <i class="fas fa-times"></i>
+      </button>
+      <h2 class="text-xl font-semibold text-center mb-4">ВЫ ХОТИТЕ СКАЧАТЬ ФАЙЛ:</h2> <!-- Обновленный заголовок -->
+      <p id="file-name" class="text-2xl font-bold text-center mb-4 uppercase"></p>
 
-      <!-- Кнопка для загрузки дополнительных файлов -->
-      <div class="text-center mt-8">
-        <button id="load-more-btn" onclick="loadMoreFiles(filteredFiles)" class="bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-all mb-6">
-          Загрузить еще
-        </button>
+ <!-- Название файла будет вставляться сюда -->
+      <p class="text-sm text-center mb-6">Zip архив содержит вектора форматов:</br> AI / PDF / SVG.</p>
+      <div class="flex justify-between">
+        <!-- Кнопка для скачивания -->
+        <a id="download-button" href="#" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" onclick="startDownload(event)">Скачать файлы</a>
+        <a href="https://wa.me/+99655888303" class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600">Заказать вектор</a>
       </div>
     </div>
+  </div>
+
+  <script>
+    // Функция для скачивания файла и закрытия окна
+    function startDownload(event) {
+      event.preventDefault();  // Останавливаем стандартное поведение ссылки (переход по ней)
+  
+      // Получаем URL для скачивания из href кнопки
+      const downloadUrl = document.getElementById("download-button").getAttribute("href");
+  
+      if (!downloadUrl) {
+        alert("Ошибка: не найден URL для скачивания.");
+        return;
+      }
+  
+      // Закрытие всплывающего окна
+      closePopup();
+  
+      // Перенаправляем на URL для скачивания
+      window.location.href = downloadUrl;  // Это должно вызвать скачивание файла
+    }
+  
+    // Функция для закрытия всплывающего окна
+    function closePopup() {
+      document.getElementById("download-popup").classList.add("hidden");
+    }
+  
+    // Функция для открытия всплывающего окна и передачи данных
+    function openPopup(fileName, fileId, fileDescription) {
+      document.getElementById("file-name").textContent = fileDescription;  // Используем описание файла вместо статического текста
+      document.getElementById("download-button").setAttribute("href", "/download/" + fileId); // Устанавливаем правильный URL для скачивания
+      document.getElementById("download-popup").classList.remove("hidden");
+    }
+  </script>    
 
     <script>
       if ('serviceWorker' in navigator) {

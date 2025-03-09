@@ -5,7 +5,7 @@
         "description": "Герб Кыргызской Республики",
         "preview": "gerb_kr.jpg",
         "formats": "AI / PDF / SVG / JPG",
-        "downloads": 0
+        "downloads": 1
     },
     {
         "id": 2,
@@ -21,7 +21,7 @@
         "description": "Герб Прокуратура КР",
         "preview": "prokuratura.jpg",
         "formats": "AI / PDF / SVG / JPG",
-        "downloads": 0
+        "downloads": 1
     },
     {
         "id": 4,
@@ -77,7 +77,7 @@
         "description": "Герб МВД УР (Реплика)",
         "preview": "mvdur.jpg",
         "formats": "AI / PDF / SVG / JPG",
-        "downloads": 0
+        "downloads": 2
     },
     {
         "id": 11,
@@ -93,7 +93,7 @@
         "description": "Герб Спецназ Скорпион",
         "preview": "skorpion.jpg",
         "formats": "AI / PDF / SVG / JPG",
-        "downloads": 0
+        "downloads": 1
     },
     {
         "id": 13,
@@ -101,7 +101,7 @@
         "description": "Герб Город Бишкек",
         "preview": "bishkek.jpg",
         "formats": "AI / PDF / SVG / JPG",
-        "downloads": 3
+        "downloads": 4
     },
     {
         "id": 14,
@@ -109,7 +109,7 @@
         "description": "Герб КНУ Юридический институт",
         "preview": "institut.jpg",
         "formats": "AI / PDF / SVG / JPG",
-        "downloads": 1
+        "downloads": 2
     },
     {
         "id": 15,
@@ -117,7 +117,7 @@
         "description": "Герб министерство финансов",
         "preview": "minfin.jpg",
         "formats": "AI / PDF / SVG / JPG",
-        "downloads": 1
+        "downloads": 19
     },
     {
         "id": 16,
@@ -125,6 +125,6 @@
         "description": "Герб гкнб - укмк (Старый)",
         "preview": "gknbold.jpg",
         "formats": "AI / PDF / SVG / JPG",
-        "downloads": 0
+        "downloads": 4
     }
 ]
