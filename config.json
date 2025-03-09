@@ -196,5 +196,59 @@
         "svg": "kant.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
+    },
+    {
+        "id": 23,
+        "name": "karakol.zip",
+        "description": "Герб город каракол",
+        "preview": "karakol.jpg",
+        "svg": "karakol.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 24,
+        "name": "talas.zip",
+        "description": "Герб города талас",
+        "preview": "talas.jpg",
+        "svg": "talas.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 25,
+        "name": "jat.zip",
+        "description": "Герб жат кр",
+        "preview": "jat.jpg",
+        "svg": "jat.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 26,
+        "name": "tunduk.zip",
+        "description": "Тундук КР (старый)",
+        "preview": "tunduk.jpg",
+        "svg": "tunduk.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 27,
+        "name": "tunduk_new.zip",
+        "description": "Тундук КР (новый)",
+        "preview": "tunduk_new.jpg",
+        "svg": "tunduk_new.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 28,
+        "name": "ornament_1.zip",
+        "description": "Орнамент для пряжки №1",
+        "preview": "ornament_1.jpg",
+        "svg": "ornament_1.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
     }
 ]
