@@ -25,90 +25,128 @@
           return allFiles.filter(file => file.description.toLowerCase().includes(query.toLowerCase()));
         }
       
-        function loadMoreFiles(filteredList) {
-          const container = document.getElementById('file-container');
-          const nextFiles = filteredList.slice(currentIndex, currentIndex + filesPerPage);
-      
-          nextFiles.forEach(file => {
-            const fileDiv = document.createElement('div');
-            fileDiv.classList.add('file-box', 'bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'hover:shadow-xl', 'transition-all', 'duration-300');
-      
-            // Название поста
-            const description = document.createElement('p');
-            description.classList.add('text-lg', 'font-semibold', 'text-gray-700', 'mb-3', 'uppercase', 'text-center', 'sm:text-xl', 'lg:text-2xl');
-            description.textContent = file.description;
-      
-            // Изображение
-            const imageDiv = document.createElement('div');
-            imageDiv.classList.add('mb-4');
-            const image = document.createElement('img');
-            image.classList.add('rounded-lg', 'w-full');
-            image.src = "/static/previews/" + file.preview;
-            image.alt = "Preview";
-      
-            // Кнопка для скачивания
-            const downloadLink = document.createElement('button');
-            downloadLink.classList.add('download-btn', 'inline-block', 'bg-blue-500', 'text-white', 'py-2', 'px-4', 'rounded-lg', 'hover:bg-blue-600', 'transition-all');
-            downloadLink.textContent = 'Скачать';
-            downloadLink.onclick = function() {
-              showDownloadPopup(file); // Показать всплывающее окно с информацией о скачивании
-            };
-      
-            // Контейнер для кнопки и информации о скачивании (с иконкой)
-            const actionDiv = document.createElement('div');
-            actionDiv.classList.add('flex', 'items-center', 'justify-between', 'w-full', 'mt-4');  // Выравнивание с justify-between
-      
-            // Сначала добавляем кнопку для скачивания
-            const leftDiv = document.createElement('div');
-            leftDiv.classList.add('flex', 'items-center', 'space-x-4');  // flex для кнопки и счетчика, space-x-4 для отступов между элементами
-            leftDiv.appendChild(downloadLink);
-      
-            // Иконка загрузки
-            const downloadInfo = document.createElement('div');
-            downloadInfo.classList.add('flex', 'items-center', 'text-sm', 'text-gray-500');
-      
-            // Иконка загрузки
-            const downloadIcon = document.createElement('i');
-            downloadIcon.classList.add('fas', 'fa-download', 'mr-2');  // Иконка загрузки
-            downloadInfo.appendChild(downloadIcon);
-      
-            // Текст с количеством скачиваний
-            const downloadsDiv = document.createElement('span');
-            downloadsDiv.textContent = file.downloads || 0;  // Количество скачиваний
-            downloadInfo.appendChild(downloadsDiv);
-      
-            // Добавляем иконку и счетчик в левый блок
-            leftDiv.appendChild(downloadInfo);
-      
-            // Добавляем блок форматов в правую сторону
-            const formatsDiv = document.createElement('span');
-            formatsDiv.classList.add('text-sm', 'text-gray-500');
-            formatsDiv.textContent = file.formats || 'Форматы не указаны';  // Если форматы не указаны, выводим текст "Форматы не указаны"
-      
-            // Добавляем блок форматов в правую сторону
-            const rightDiv = document.createElement('div');
-            rightDiv.classList.add('ml-auto');  // Выравнивание вправо
-            rightDiv.appendChild(formatsDiv);
-      
-            // Добавляем все элементы в основной контейнер
-            actionDiv.appendChild(leftDiv);
-            actionDiv.appendChild(rightDiv);
-      
-            // Добавляем остальные элементы в файл
-            fileDiv.appendChild(description);
-            fileDiv.appendChild(imageDiv);
-            imageDiv.appendChild(image);
-            fileDiv.appendChild(actionDiv);
-      
-            // Добавляем файл в контейнер
-            container.appendChild(fileDiv);
-          });
-      
-          currentIndex += filesPerPage;
-          if (currentIndex >= filteredList.length) {
-            document.getElementById('load-more-btn').style.display = 'none';
-          }
-        }
+// Функция для загрузки файлов и их отображения
+function loadMoreFiles(filteredList) {
+  const container = document.getElementById('file-container');
+  const nextFiles = filteredList.slice(currentIndex, currentIndex + filesPerPage);
+
+  nextFiles.forEach(file => {
+    const fileDiv = document.createElement('div');
+    fileDiv.classList.add('file-box', 'bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'hover:shadow-xl', 'transition-all', 'duration-300');
+
+    // Название поста
+    const description = document.createElement('p');
+    description.classList.add('text-lg', 'font-semibold', 'text-gray-700', 'mb-3', 'uppercase', 'text-center', 'sm:text-xl', 'lg:text-2xl');
+    description.textContent = file.description;
+
+    // Изображение
+    const imageDiv = document.createElement('div');
+    imageDiv.classList.add('mb-4');
+    const image = document.createElement('img');
+    image.classList.add('rounded-lg', 'w-full');
+    image.src = "/static/previews/" + file.preview;
+    image.alt = "Preview";
+
+    // Добавляем обработчик для клика по изображению
+    image.onclick = function() {
+      if (file.svg) {
+        openSvgPopup(file);  // Открыть SVG, если файл является вектором
+      }
+    };
+
+    // Кнопка для скачивания
+    const downloadLink = document.createElement('button');
+    downloadLink.classList.add('download-btn', 'inline-block', 'bg-blue-500', 'text-white', 'py-2', 'px-4', 'rounded-lg', 'hover:bg-blue-600', 'transition-all');
+    downloadLink.textContent = 'Скачать';
+    downloadLink.onclick = function() {
+      showDownloadPopup(file); // Показать всплывающее окно с информацией о скачивании
+    };
+
+    // Контейнер для кнопки и информации о скачивании (с иконкой)
+    const actionDiv = document.createElement('div');
+    actionDiv.classList.add('flex', 'items-center', 'justify-between', 'w-full', 'mt-4');  // Выравнивание с justify-between
+
+    // Добавляем кнопку для скачивания
+    const leftDiv = document.createElement('div');
+    leftDiv.classList.add('flex', 'items-center', 'space-x-4');  // flex для кнопки и счетчика, space-x-4 для отступов между элементами
+    leftDiv.appendChild(downloadLink);
+
+    // Иконка загрузки
+    const downloadInfo = document.createElement('div');
+    downloadInfo.classList.add('flex', 'items-center', 'text-sm', 'text-gray-500');
+
+    // Иконка загрузки
+    const downloadIcon = document.createElement('i');
+    downloadIcon.classList.add('fas', 'fa-download', 'mr-2');  // Иконка загрузки
+    downloadInfo.appendChild(downloadIcon);
+
+    // Текст с количеством скачиваний
+    const downloadsDiv = document.createElement('span');
+    downloadsDiv.textContent = file.downloads || 0;  // Количество скачиваний
+    downloadInfo.appendChild(downloadsDiv);
+
+    // Добавляем иконку и счетчик в левый блок
+    leftDiv.appendChild(downloadInfo);
+
+    // Добавляем блок форматов в правую сторону
+    const formatsDiv = document.createElement('span');
+    formatsDiv.classList.add('text-sm', 'text-gray-500');
+    formatsDiv.textContent = file.formats || 'Форматы не указаны';  // Если форматы не указаны, выводим текст "Форматы не указаны"
+
+    // Добавляем блок форматов в правую сторону
+    const rightDiv = document.createElement('div');
+    rightDiv.classList.add('ml-auto');  // Выравнивание вправо
+    rightDiv.appendChild(formatsDiv);
+
+    // Добавляем все элементы в основной контейнер
+    actionDiv.appendChild(leftDiv);
+    actionDiv.appendChild(rightDiv);
+
+    // Добавляем остальные элементы в файл
+    fileDiv.appendChild(description);
+    fileDiv.appendChild(imageDiv);
+    imageDiv.appendChild(image);
+    fileDiv.appendChild(actionDiv);
+
+    // Добавляем файл в контейнер
+    container.appendChild(fileDiv);
+  });
+
+  currentIndex += filesPerPage;
+  if (currentIndex >= filteredList.length) {
+    document.getElementById('load-more-btn').style.display = 'none';
+  }
+}
+
+// Функция для открытия окна с SVG
+function openSvgPopup(file) {
+  const popup = document.getElementById('svg-popup');
+  const svgContainer = document.getElementById('svg-container');
+
+  // Очищаем контейнер перед загрузкой нового SVG
+  svgContainer.innerHTML = '';
+
+  // Загружаем SVG
+  const svgPath = "/static/previews/" + file.svg;  // Путь к SVG файлу
+
+  // Создаем запрос для загрузки SVG
+  fetch(svgPath)
+    .then(response => response.text())
+    .then(svgContent => {
+      svgContainer.innerHTML = svgContent;  // Вставляем SVG в контейнер
+      popup.classList.remove('hidden');  // Показываем окно
+    })
+    .catch(error => {
+      console.error('Ошибка загрузки SVG:', error);
+    });
+}
+
+// Функция для закрытия всплывающего окна с SVG
+function closeSvgPopup() {
+  const popup = document.getElementById('svg-popup');
+  popup.classList.add('hidden');  // Скрываем окно
+}
+
       
         function searchFiles() {
           const searchInput = document.getElementById('search-input');
@@ -239,6 +277,67 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Всплывающее окно для SVG -->
+<div id="svg-popup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-lg max-w-lg w-full relative">
+      <!-- Кнопка закрытия в правом верхнем углу всплывающего окна -->
+      <button onclick="closeSvgPopup()" class="absolute top-1 right-3 text-gray-600">
+        <i class="fas fa-times"></i>
+      </button>
+      <h2 class="text-xl font-semibold text-center mb-4">Просмотр SVG вектора</h2>
+      
+      <!-- Контейнер для SVG -->
+      <div id="svg-container" class="w-full h-auto overflow-auto">
+        <!-- Здесь будет отображаться SVG -->
+      </div>
+
+      <!-- Кнопка для скачивания SVG -->
+      <div class="text-center mt-4">
+        <a id="download-svg-button" href="#" class="bg-blue-500 text-white py-3 px-5 rounded-lg hover:bg-blue-600">СКАЧАТЬ SVG</a>
+      </div>
+    </div>
+</div>
+
+
+  <script>
+
+// Функция для открытия окна с SVG
+function openSvgPopup(file) {
+  const popup = document.getElementById('svg-popup');
+  const svgContainer = document.getElementById('svg-container');
+  const downloadButton = document.getElementById('download-svg-button'); // Кнопка для скачивания SVG
+
+  // Очищаем контейнер перед загрузкой нового SVG
+  svgContainer.innerHTML = '';
+
+  // Загружаем SVG
+  const svgPath = "/static/previews/" + file.svg;  // Путь к SVG файлу
+
+  // Создаем запрос для загрузки SVG
+  fetch(svgPath)
+    .then(response => response.text())
+    .then(svgContent => {
+      svgContainer.innerHTML = svgContent;  // Вставляем SVG в контейнер
+      popup.classList.remove('hidden');  // Показываем окно
+
+      // Устанавливаем ссылку на файл для скачивания
+      downloadButton.href = svgPath;
+    })
+    .catch(error => {
+      console.error('Ошибка загрузки SVG:', error);
+    });
+}
+
+// Функция для закрытия всплывающего окна с SVG
+function closeSvgPopup() {
+  const popup = document.getElementById('svg-popup');
+  popup.classList.add('hidden');  // Скрываем окно
+}
+
+
+  </script>
 
   <script>
     // Функция для скачивания файла и закрытия окна

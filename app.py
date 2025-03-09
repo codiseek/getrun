@@ -58,6 +58,7 @@ def admin():
     if request.method == "POST":
         file = request.files.get("file")
         preview = request.files.get("preview")
+        svg = request.files.get("svg")
         description = request.form.get("description", "")
         formats = request.form.get("formats", "")
         downloads = int(request.form.get("downloads", 0))  # Преобразуем в целое число
@@ -71,6 +72,11 @@ def admin():
             if preview and preview.filename:
                 preview_filename = secure_filename(preview.filename)
                 preview.save(os.path.join(PREVIEW_FOLDER, preview_filename))
+
+            svg_filename = ""
+            if svg and svg.filename:
+                svg_filename = secure_filename(svg.filename)
+                svg.save(os.path.join(PREVIEW_FOLDER, svg_filename))
             
             # Загружаем текущие файлы
             files = load_config()
@@ -84,6 +90,7 @@ def admin():
                 "name": filename,
                 "description": description,
                 "preview": preview_filename,
+                "svg": svg_filename,
                 "formats": formats,
                 "downloads": downloads
             })
@@ -169,6 +176,9 @@ def download(file_id):
     else:
         return "Файл не найден", 404
 
+SVG_FOLDER = 'static/svg'  # Добавляем папку для SVG
+os.makedirs(SVG_FOLDER, exist_ok=True)  # Создаем, если её нет
+
 @app.route('/edit_file', methods=['POST'])
 def edit_file():
     original_name = request.form['original_name']
@@ -176,6 +186,7 @@ def edit_file():
     new_formats = request.form['formats']
     new_file = request.files.get("new_file")  # Новый ZIP файл
     new_preview = request.files.get("new_preview")  # Новое превью
+    new_svg = request.files.get("new_svg")  # Новое SVG
 
     files = load_config()
 
@@ -210,8 +221,22 @@ def edit_file():
                 new_preview.save(new_preview_path)
                 file["preview"] = new_preview_filename  # Обновляем имя превью в JSON
 
+            # Обновление SVG (сохранение в static/previews)
+            if new_svg and new_svg.filename.endswith(".svg"):
+                new_svg_filename = secure_filename(new_svg.filename)
+                new_svg_path = os.path.join(PREVIEW_FOLDER, new_svg_filename)  # Теперь в previews
+
+                # Удаляем старый SVG, если он был
+                old_svg_path = os.path.join(PREVIEW_FOLDER, file.get("svg", ""))
+                if os.path.exists(old_svg_path):
+                    os.remove(old_svg_path)
+
+                new_svg.save(new_svg_path)
+                file["svg"] = new_svg_filename  # Обновляем путь к SVG в JSON
+
             break  # Завершаем цикл после обновления
 
+    
     save_config(files)
     flash('Файл успешно обновлен!', 'success')
     return redirect(url_for('admin', password=PASSWORD))
