@@ -299,9 +299,72 @@
     {
         "id": 34,
         "name": "ornament_6.zip",
-        "description": "Орнамент круглый №6",
+        "description": "Орнамент круглый №1",
         "preview": "ornament_6.jpg",
         "svg": "ornament_6.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 1
+    },
+    {
+        "id": 35,
+        "name": "ornament_7.zip",
+        "description": "Орнамент круглый №2",
+        "preview": "ornament_7.jpg",
+        "svg": "ornament_7.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 36,
+        "name": "minenergo-sammit.zip",
+        "description": "Министерство Энергетики ",
+        "preview": "minenergo-sammit.jpg",
+        "svg": "minenergo-sammit.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 37,
+        "name": "polis_academ.zip",
+        "description": "Герб Polis Akademisi",
+        "preview": "polis_academ.jpg",
+        "svg": "polis_academ.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 38,
+        "name": "nalog_2.zip",
+        "description": "Герб Налоговой Службы КР (2)",
+        "preview": "nalog_2.jpg",
+        "svg": "nalog_2.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 39,
+        "name": "ata_jurt.zip",
+        "description": "Герб Ата-журт милдет эрдик",
+        "preview": "ata_jurt.jpg",
+        "svg": "ata_jurt.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 40,
+        "name": "mvd_2.zip",
+        "description": "Герб МВД Щит",
+        "preview": "mvd_2.jpg",
+        "svg": "mvd_2.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 41,
+        "name": "temir_jolu.zip",
+        "description": "Кыргыз темир жолу",
+        "preview": "temir_jolu.jpg",
+        "svg": "temir_jolu.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
     }
