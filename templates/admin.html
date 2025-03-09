@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админка - GETRUN</title>
+    <title>GETRUN - Панель</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-800 font-sans">
-    <h1 class="text-4xl text-center py-10 font-semibold">ПАНЕЛЬ УПРАВЛЕНИЯ ФАЙЛАМИ</h1>
-    <div class="container mx-auto px-4 max-w-[850px]">
+    <h1 class="text-4xl text-center py-10 font-semibold">ПАНЕЛЬ УПРАВЛЕНИЯ</h1>
+    <div class="container mx-auto px-4 max-w-[1200px]">
 
         
         <!-- Форма для загрузки файла -->
@@ -42,30 +42,89 @@
 
 
         
-       <!-- Список загруженных файлов -->
-        <div class="file-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {% for file in files %}
-            <div class="file-box bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-                <span class="text-lg font-semibold mb-4">{{ file.description }}</span>
-                
-                <!-- Изображение превью -->
-                <img class="rounded-lg w-[150px] h-[150px] object-cover mb-4" src="/static/previews/{{ file.preview }}" alt="Preview">
+      <!-- Список загруженных файлов -->
+      <div class="file-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for file in files %}
+        <div class="file-box bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+            <span class="text-lg font-semibold mb-4">{{ file.description }}</span>
+            
+            <!-- Изображение превью -->
+            <img class="rounded-lg w-[150px] h-[150px] object-cover mb-4" src="/static/previews/{{ file.preview }}" alt="Preview">
 
-                <span class="text-sm mb-4">{{ file.name }}</span>
+            <span class="text-sm mb-4">{{ file.name }}</span>
 
-                <!-- Форматы -->
-                <span class="text-sm text-gray-500 mb-4">{{ file.formats or 'Форматы не указаны' }}</span>
+            <!-- Форматы -->
+            <span class="text-sm text-gray-500 mb-4">{{ file.formats or 'Форматы не указаны' }}</span>
 
-                 <!-- Скачивания -->
-                 <span class="text-sm text-gray-500 mb-4">Скачиваний: {{ file.downloads}}</span>
-                
+            <!-- Скачивания -->
+            <span class="text-sm text-gray-500 mb-4">Скачиваний: {{ file.downloads }}</span>
+
+            <div class="flex gap-2">
                 <!-- Кнопка удаления -->
-                <form action="{{ url_for('delete', filename=file.name) }}" method="post" style="display:inline;">
+                <form action="{{ url_for('delete', filename=file.name) }}" method="post">
                     <input type="hidden" name="password" value="5Q88xLoo1">
                     <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-all">Удалить</button>
                 </form>
+
+                <!-- Кнопка редактирования -->
+                <button onclick="openEditModal('{{ file.name }}', '{{ file.description }}', '{{ file.preview }}', '{{ file.formats }}')"
+                    class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 transition-all">
+                    Редактировать
+                </button>
             </div>
-            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Модальное окно для редактирования -->
+<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-2xl font-semibold mb-4">Редактирование файла</h2>
+        
+        <form id="editForm" action="{{ url_for('edit_file') }}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="original_name" id="editOriginalName">
+
+            <label class="block mb-2 text-sm font-semibold">Название файла</label>
+            <input type="text" name="description" id="editDescription" class="w-full p-2 mb-4 border border-gray-300 rounded-lg">
+
+            <label class="block mb-2 text-sm font-semibold">Новый ZIP файл</label>
+            <input type="file" name="new_file" class="w-full p-2 mb-4 border border-gray-300 rounded-lg">
+
+            <label class="block mb-2 text-sm font-semibold">Новое превью</label>
+            <input type="file" name="new_preview" class="w-full p-2 mb-4 border border-gray-300 rounded-lg">
+
+            <label class="block mb-2 text-sm font-semibold">Форматы</label>
+            <input type="text" name="formats" id="editFormats" class="w-full p-2 mb-4 border border-gray-300 rounded-lg">
+
+            <div class="flex justify-between">
+                <button type="button" onclick="closeEditModal()" class="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500">Отмена</button>
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openEditModal(name, description, preview, formats) {
+        document.getElementById("editOriginalName").value = name;
+        document.getElementById("editDescription").value = description;
+        document.getElementById("editFormats").value = formats;
+        document.getElementById("editModal").classList.remove("hidden");
+    }
+
+    function closeEditModal() {
+        document.getElementById("editModal").classList.add("hidden");
+    }
+</script>
+
+<script>
+    document.getElementById("editForm").addEventListener("submit", function () {
+        setTimeout(() => location.reload(), 500);
+    });
+</script>
+
+        
         </div>
     </div>
 </body>

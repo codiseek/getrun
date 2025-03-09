@@ -1,12 +1,13 @@
 import os
 import json
-from flask import Flask, request, render_template, redirect, url_for, send_from_directory
+from flask import Flask, request, render_template, redirect, url_for, send_from_directory, flash
 from werkzeug.utils import secure_filename
 import datetime
 from visitor import track_visitor
 
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 UPLOAD_FOLDER = 'uploads'
 PREVIEW_FOLDER = 'static/previews'
 CONFIG_FILE = 'config.json'
@@ -167,6 +168,53 @@ def download(file_id):
         return send_from_directory(UPLOAD_FOLDER, file_to_download["name"])
     else:
         return "Файл не найден", 404
+
+@app.route('/edit_file', methods=['POST'])
+def edit_file():
+    original_name = request.form['original_name']
+    new_description = request.form['description']
+    new_formats = request.form['formats']
+    new_file = request.files.get("new_file")  # Новый ZIP файл
+    new_preview = request.files.get("new_preview")  # Новое превью
+
+    files = load_config()
+
+    for file in files:
+        if file["name"] == original_name:
+            file["description"] = new_description
+            file["formats"] = new_formats
+
+            # Обновление ZIP-файла
+            if new_file and new_file.filename.endswith(".zip"):
+                new_filename = secure_filename(new_file.filename)
+                new_path = os.path.join(UPLOAD_FOLDER, new_filename)
+
+                # Удаляем старый файл
+                old_path = os.path.join(UPLOAD_FOLDER, file["name"])
+                if os.path.exists(old_path):
+                    os.remove(old_path)
+
+                new_file.save(new_path)
+                file["name"] = new_filename  # Обновляем имя файла в JSON
+
+            # Обновление превью
+            if new_preview and new_preview.filename:
+                new_preview_filename = secure_filename(new_preview.filename)
+                new_preview_path = os.path.join(PREVIEW_FOLDER, new_preview_filename)
+
+                # Удаляем старое превью
+                old_preview_path = os.path.join(PREVIEW_FOLDER, file["preview"])
+                if os.path.exists(old_preview_path):
+                    os.remove(old_preview_path)
+
+                new_preview.save(new_preview_path)
+                file["preview"] = new_preview_filename  # Обновляем имя превью в JSON
+
+            break  # Завершаем цикл после обновления
+
+    save_config(files)
+    flash('Файл успешно обновлен!', 'success')
+    return redirect(url_for('admin', password=PASSWORD))
 
 
 if __name__ == "__main__":
