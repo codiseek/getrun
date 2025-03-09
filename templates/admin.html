@@ -7,12 +7,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-800 font-sans">
-    <h1 class="text-4xl text-center py-10 font-semibold">ПАНЕЛЬ УПРАВЛЕНИЯ</h1>
-    <div class="container mx-auto px-4 max-w-[1200px]">
-
-        
+    <body class="bg-white text-gray-800 font-sans">
+        <h1 class="text-4xl text-center py-10 font-semibold">
+          <a href="{{ url_for('index') }}">
+            <img src="static/admin.svg" class="max-w-[300px] mx-auto" />
+          </a>
+        </h1>
+    
+    <!-- Контейнер для формы с меньшей шириной -->
+    <div class="mx-auto px-4 max-w-md">
         <!-- Форма для загрузки файла -->
-        <form action="{{ url_for('admin', password='5Q88xLoo1') }}" method="post" enctype="multipart/form-data" class="form-box bg-white p-6 rounded-lg shadow-lg mb-8">
+        <form action="{{ url_for('admin', password='5Q88xLoo1') }}" method="post" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-lg mb-8">
             <!-- Первая форма: Выберите файл ZIP -->
             <label for="file" class="text-sm font-semibold text-gray-700 mb-2 block">Выберите файл ZIP</label>
             <input type="file" name="file" accept=".zip" required class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="file">
@@ -34,6 +39,14 @@
             
             <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-all duration-300">Загрузить файл</button>
         </form>
+    </div>
+
+    <!-- Остальной контент с шириной 1400px -->
+    <div class="container mx-auto px-4 max-w-[1400px]">
+      
+
+</body>
+
 
          <!-- Информация о файлах и скачиваниях -->
 <div class="container mx-auto px-4 text-center mb-6">
@@ -55,11 +68,11 @@
             <!-- Изображение превью -->
             <img class="rounded-lg w-[150px] h-[150px] object-cover mb-4" src="/static/previews/{{ file.preview }}" alt="Preview">
 
-            <span class="text-sm mb-4">{{ file.name }}</span>
-            <span class="text-sm mb-4">{{ file.svg or 'SVG не загружено' }}</span>
+            <span class="text-sm mb-4">Zip: uploads/{{ file.name }}</span>
+            <span class="text-sm mb-4">Svg: static/previews/{{ file.svg or 'SVG не загружено' }}</span>
 
             <!-- Форматы -->
-            <span class="text-sm text-gray-500 mb-4">{{ file.formats or 'Форматы не указаны' }}</span>
+            <span class="text-sm text-gray-500 mb-4">Форматы: {{ file.formats or 'Форматы не указаны' }}</span>
 
             <!-- Скачивания -->
             <span class="text-sm text-gray-500 mb-4">Скачиваний: {{ file.downloads }}</span>
@@ -132,7 +145,7 @@
     });
 </script>
 
-        
+</div> 
         </div>
     </div>
 </body>
