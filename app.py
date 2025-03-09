@@ -3,12 +3,18 @@ import json
 from flask import Flask, request, render_template, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 import datetime
+from visitor import track_visitor
+
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 PREVIEW_FOLDER = 'static/previews'
 CONFIG_FILE = 'config.json'
-PASSWORD = 'x0000'
+PASSWORD = '5Q88xLoo1'
+
+
+track_visitor(app)
+
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PREVIEW_FOLDER, exist_ok=True)
@@ -47,12 +53,13 @@ def admin():
     if request.args.get("password") != PASSWORD:
         return "Доступ запрещён", 403
     
+    # Обработка POST запроса для загрузки файлов
     if request.method == "POST":
         file = request.files.get("file")
         preview = request.files.get("preview")
         description = request.form.get("description", "")
         formats = request.form.get("formats", "")
-        downloads = request.form.get("downloads", 0)
+        downloads = int(request.form.get("downloads", 0))  # Преобразуем в целое число
         
         if file and file.filename.endswith(".zip"):
             filename = secure_filename(file.filename)
@@ -64,19 +71,49 @@ def admin():
                 preview_filename = secure_filename(preview.filename)
                 preview.save(os.path.join(PREVIEW_FOLDER, preview_filename))
             
+            # Загружаем текущие файлы
             files = load_config()
-            new_id = len(files) + 1  # ID для нового файла
+            
+            # Новый ID будет основан на длине списка файлов
+            new_id = len(files) + 1  
+            
+            # Добавляем новый файл в список
             files.append({
-                "id": new_id,  # Добавляем id
+                "id": new_id,  # ID нового файла
                 "name": filename,
                 "description": description,
                 "preview": preview_filename,
-                "formats": formats,  # Добавляем поле форматов
+                "formats": formats,
                 "downloads": downloads
             })
+            
+            # Сохраняем обновленный список файлов
             save_config(files)
             
+            # Перенаправляем обратно на страницу админки
             return redirect(url_for("admin", password=PASSWORD))
+
+    # Загружаем все файлы для админки
+    files = load_config()
+
+    # Сортируем по ID, чтобы новые файлы были в начале
+    files = sorted(files, key=lambda x: x['id'], reverse=True)
+
+    # Получаем последний ID и суммарное количество скачиваний
+    last_id = files[0]['id'] if files else 0
+    total_downloads = sum(file.get('downloads', 0) for file in files)
+
+    # Загружаем информацию о посетителях
+    try:
+        with open('visitors.json', 'r') as file:
+            visitors = json.load(file)
+        unique_visitors = len(visitors)  # Просто считаем количество всех посетителей
+    except (FileNotFoundError, json.JSONDecodeError):
+        unique_visitors = 0
+
+    # Передаем файлы, последний ID, общее количество скачиваний и количество посетителей в шаблон
+    return render_template("admin.html", files=files, last_id=last_id, total_downloads=total_downloads, unique_visitors=unique_visitors)
+
     
     files = load_config()
     files = sorted(files, key=lambda x: x['id'], reverse=True)  # Сортируем по ID, новые файлы сверху

@@ -110,5 +110,21 @@
         "preview": "institut.jpg",
         "formats": "AI / PDF / SVG / JPG",
         "downloads": 1
+    },
+    {
+        "id": 15,
+        "name": "minfin.zip",
+        "description": "Герб министерство финансов",
+        "preview": "minfin.jpg",
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 1
+    },
+    {
+        "id": 16,
+        "name": "gknbold.zip",
+        "description": "Герб гкнб - укмк (Старый)",
+        "preview": "gknbold.jpg",
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     }
 ]
