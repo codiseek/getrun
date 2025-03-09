@@ -94,5 +94,13 @@
         "preview": "skorpion.jpg",
         "formats": "AI / PDF / SVG / JPG",
         "downloads": 0
+    },
+    {
+        "id": 13,
+        "name": "bishkek.zip",
+        "description": "Герб Город Бишкек",
+        "preview": "bishkek.jpg",
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     }
 ]
