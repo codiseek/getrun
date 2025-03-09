@@ -4,7 +4,7 @@
         "name": "gerb_kr.zip",
         "description": "Герб Кыргызской Республики",
         "preview": "gerb_kr.jpg",
-        "svg": "-",
+        "svg": "gerb_kr.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 1
     },
@@ -13,7 +13,7 @@
         "name": "gknb_9.zip",
         "description": "Герб ГКНБ 9 Служба (Реплика)",
         "preview": "gknb_9.jpg",
-        "svg": "-",
+        "svg": "gknb_9.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
     },
@@ -22,7 +22,7 @@
         "name": "prokuratura.zip",
         "description": "Герб Прокуратура КР",
         "preview": "prokuratura.jpg",
-        "svg": "-",
+        "svg": "prokuratura.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 1
     },
@@ -31,7 +31,7 @@
         "name": "gknb.zip",
         "description": "Герб ГКНБ - УКМК КР",
         "preview": "gknb.jpg",
-        "svg": "-",
+        "svg": "gknb.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 1
     },
@@ -40,7 +40,7 @@
         "name": "mvd.zip",
         "description": "Герб МВД КР",
         "preview": "mvd.jpg",
-        "svg": "-",
+        "svg": "mvd.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 1
     },
@@ -49,7 +49,7 @@
         "name": "sbnon.zip",
         "description": "Герб СБНОН КР",
         "preview": "sbnon.jpg",
-        "svg": "-",
+        "svg": "sbnon.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
     },
@@ -58,7 +58,7 @@
         "name": "nalog.zip",
         "description": "Герб Налоговой Службы КР",
         "preview": "nalog.jpg",
-        "svg": "-",
+        "svg": "nalog.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
     },
@@ -67,7 +67,7 @@
         "name": "sovbez.zip",
         "description": "Герб Совета Безопастности КР",
         "preview": "sovbez.jpg",
-        "svg": "-",
+        "svg": "sovbez.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
     },
@@ -76,7 +76,7 @@
         "name": "kenesh.zip",
         "description": "Герб Жогорку Кенеш",
         "preview": "kenesh.jpg",
-        "svg": "-",
+        "svg": "kenesh.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
     },
@@ -85,7 +85,7 @@
         "name": "mvdur.zip",
         "description": "Герб МВД УР (Реплика)",
         "preview": "mvdur.jpg",
-        "svg": "-",
+        "svg": "mvdur.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 2
     },
@@ -94,7 +94,7 @@
         "name": "bator.zip",
         "description": "ГЕРБ БАТОР",
         "preview": "bator.jpg",
-        "svg": "-",
+        "svg": "bator.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
     },
@@ -103,7 +103,7 @@
         "name": "skorpion.zip",
         "description": "Герб Спецназ Скорпион",
         "preview": "skorpion.jpg",
-        "svg": "-",
+        "svg": "skorpion.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 1
     },
@@ -112,7 +112,7 @@
         "name": "bishkek.zip",
         "description": "Герб Город Бишкек",
         "preview": "bishkek.jpg",
-        "svg": "-",
+        "svg": "bishkek.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 4
     },
@@ -121,7 +121,7 @@
         "name": "institut.zip",
         "description": "Герб КНУ Юридический институт",
         "preview": "institut.jpg",
-        "svg": "-",
+        "svg": "institut.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 2
     },
@@ -130,7 +130,7 @@
         "name": "minfin.zip",
         "description": "Герб министерство финансов",
         "preview": "minfin.jpg",
-        "svg": "-",
+        "svg": "minfin.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 19
     },
@@ -139,7 +139,7 @@
         "name": "gknbold.zip",
         "description": "Герб гкнб - укмк (Старый)",
         "preview": "gknbold.jpg",
-        "svg": "-",
+        "svg": "gknbold.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 4
     },
@@ -169,5 +169,32 @@
         "svg": "gerb_romb1.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 2
+    },
+    {
+        "id": 20,
+        "name": "customs.zip",
+        "description": "Герб кыргыз бажысы",
+        "preview": "customs.jpg",
+        "svg": "customs.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 21,
+        "name": "minoborony.zip",
+        "description": "Герб министерства обороны КР",
+        "preview": "minoborony.jpg",
+        "svg": "minoborony.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 22,
+        "name": "kant.zip",
+        "description": "Герб город кант",
+        "preview": "kant.jpg",
+        "svg": "kant.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
     }
 ]
