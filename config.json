@@ -4,76 +4,87 @@
         "name": "gerb_kr.zip",
         "description": "Герб Кыргызской Республики",
         "preview": "gerb_kr.jpg",
-        "formats": "AI / PDF / SVG / JPG"
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     },
     {
         "id": 2,
         "name": "gknb_9.zip",
         "description": "Герб ГКНБ 9 Служба (Реплика)",
         "preview": "gknb_9.jpg",
-        "formats": "AI / PDF / SVG / JPG"
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     },
     {
         "id": 3,
         "name": "prokuratura.zip",
         "description": "Герб Прокуратура КР",
         "preview": "prokuratura.jpg",
-        "formats": "AI / PDF / SVG / JPG"
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     },
     {
         "id": 4,
         "name": "gknb.zip",
         "description": "Герб ГКНБ - УКМК КР",
         "preview": "gknb.jpg",
-        "formats": "AI / PDF / SVG / JPG"
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     },
     {
         "id": 5,
         "name": "mvd.zip",
         "description": "Герб МВД КР",
         "preview": "mvd.jpg",
-        "formats": "AI / PDF / SVG / JPG"
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     },
     {
         "id": 6,
         "name": "sbnon.zip",
         "description": "Герб СБНОН КР",
         "preview": "sbnon.jpg",
-        "formats": "AI / PDF / SVG / JPG"
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     },
     {
         "id": 7,
         "name": "nalog.zip",
         "description": "Герб Налоговой Службы КР",
         "preview": "nalog.jpg",
-        "formats": "AI / PDF / SVG / JPG"
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     },
     {
         "id": 8,
         "name": "sovbez.zip",
         "description": "Герб Совета Безопастности КР",
         "preview": "sovbez.jpg",
-        "formats": "AI / PDF / SVG / JPG"
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     },
     {
         "id": 9,
         "name": "kenesh.zip",
         "description": "Герб Жогорку Кенеш",
         "preview": "kenesh.jpg",
-        "formats": "AI / PDF / SVG / JPG"
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     },
     {
         "id": 10,
         "name": "mvdur.zip",
         "description": "Герб МВД УР (Реплика)",
         "preview": "mvdur.jpg",
-        "formats": "AI / PDF / SVG / JPG"
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     },
     {
         "id": 11,
         "name": "bator.zip",
         "description": "ГЕРБ БАТОР",
         "preview": "bator.jpg",
-        "formats": "AI / PDF / SVG / JPG"
+        "formats": "AI / PDF / SVG / JPG",
+        "downloads": 0
     }
 ]

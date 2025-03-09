@@ -46,6 +46,7 @@ def admin():
         preview = request.files.get("preview")
         description = request.form.get("description", "")
         formats = request.form.get("formats", "")
+        downloads = request.form.get("downloads", 0)
         
         if file and file.filename.endswith(".zip"):
             filename = secure_filename(file.filename)
@@ -64,7 +65,8 @@ def admin():
                 "name": filename,
                 "description": description,
                 "preview": preview_filename,
-                "formats": formats  # Добавляем поле форматов
+                "formats": formats,  # Добавляем поле форматов
+                "downloads": downloads
             })
             save_config(files)
             
@@ -101,8 +103,28 @@ def delete(filename):
     return redirect(url_for("admin", password=PASSWORD))
 
 @app.route("/uploads/<filename>")
-def download(filename):
+def download_by_filename(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
+
+@app.route("/download/<int:file_id>")
+def download(file_id):
+    # Загружаем список файлов
+    files = load_config()
+
+    # Находим файл по ID
+    file_to_download = next((f for f in files if f["id"] == file_id), None)
+    if file_to_download:
+        # Увеличиваем счетчик скачиваний
+        file_to_download["downloads"] += 1
+
+        # Сохраняем обновленный список файлов
+        save_config(files)
+
+        # Переходим к загрузке файла
+        return send_from_directory(UPLOAD_FOLDER, file_to_download["name"])
+    else:
+        return "Файл не найден", 404
+
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -3,13 +3,14 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#000000"> <!-- Цвет верхней панели браузера -->
-    <meta name="mobile-web-app-capable" content="yes"> <!-- Разрешаем отображение как приложение -->
-    <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Для iOS -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- Стиль статусной строки на iOS -->
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="GETRUN">
     <link rel="apple-touch-icon" href="/static/icon.png">
     <link rel="icon" href="/static/icon.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>GETRUN - Бесплатная векторная графика</title>
     <link rel="manifest" href="/static/manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,154 +22,183 @@
       let filteredFiles = allFiles; // Для поиска будем фильтровать файлы, но не очищать основной список
         
       function filterFiles(query) {
-          return allFiles.filter(file => file.description.toLowerCase().includes(query.toLowerCase()));
+        return allFiles.filter(file => file.description.toLowerCase().includes(query.toLowerCase()));
       }
 
       function loadMoreFiles(filteredList) {
-          const container = document.getElementById('file-container');
-          const nextFiles = filteredList.slice(currentIndex, currentIndex + filesPerPage);
+        const container = document.getElementById('file-container');
+        const nextFiles = filteredList.slice(currentIndex, currentIndex + filesPerPage);
 
-          nextFiles.forEach(file => {
-              const fileDiv = document.createElement('div');
-              fileDiv.classList.add('file-box', 'bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'hover:shadow-xl', 'transition-all', 'duration-300');
+        nextFiles.forEach(file => {
+          const fileDiv = document.createElement('div');
+          fileDiv.classList.add('file-box', 'bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'hover:shadow-xl', 'transition-all', 'duration-300');
 
-              // Название поста (с верхним регистром, увеличенным размером на ПК и отцентрированное)
-              const description = document.createElement('p');
-              description.classList.add('text-lg', 'font-semibold', 'text-gray-700', 'mb-3', 'uppercase', 'text-center', 'sm:text-xl', 'lg:text-2xl');
-              description.textContent = file.description;
+          // Название поста
+          const description = document.createElement('p');
+          description.classList.add('text-lg', 'font-semibold', 'text-gray-700', 'mb-3', 'uppercase', 'text-center', 'sm:text-xl', 'lg:text-2xl');
+          description.textContent = file.description;
 
-              const imageDiv = document.createElement('div');
-              imageDiv.classList.add('mb-4');
-              const image = document.createElement('img');
-              image.classList.add('rounded-lg', 'w-full');
-              image.src = "/static/previews/" + file.preview;
-              image.alt = "Preview";
+          // Изображение
+          const imageDiv = document.createElement('div');
+          imageDiv.classList.add('mb-4');
+          const image = document.createElement('img');
+          image.classList.add('rounded-lg', 'w-full');
+          image.src = "/static/previews/" + file.preview;
+          image.alt = "Preview";
 
-              const downloadLink = document.createElement('a');
-              downloadLink.classList.add('download-btn', 'inline-block', 'bg-blue-500', 'text-white', 'py-2', 'px-4', 'rounded-lg', 'hover:bg-blue-600', 'transition-all');
-              downloadLink.href = "/uploads/" + file.name;
-              downloadLink.download = file.name;
-              downloadLink.textContent = 'Скачать';
+       // Кнопка для скачивания
+const downloadLink = document.createElement('a');
+downloadLink.classList.add('download-btn', 'inline-block', 'bg-blue-500', 'text-white', 'py-2', 'px-4', 'rounded-lg', 'hover:bg-blue-600', 'transition-all');
+downloadLink.href = "/download/" + file.id;  // Используем новый маршрут для скачивания с ID файла
+downloadLink.download = file.name;
+downloadLink.textContent = 'Скачать';
 
-              // Добавляем формат
-              const formatsDiv = document.createElement('div');
-              formatsDiv.classList.add('text-sm', 'text-gray-500', 'ml-4', 'mt-2');
-              formatsDiv.textContent = file.formats || "Форматы не указаны";  // Показываем форматы или текст "Форматы не указаны"
+// Контейнер для кнопки и информации о скачивании (с иконкой)
+const actionDiv = document.createElement('div');
+actionDiv.classList.add('flex', 'items-center', 'justify-between', 'w-full', 'mt-4');  // Выравнивание с justify-between
 
-              // Используем flexbox для выравнивания кнопки и текста форматов
-              const actionDiv = document.createElement('div');
-              actionDiv.classList.add('flex', 'items-center', 'justify-between', 'w-full', 'mt-4');
-              actionDiv.appendChild(downloadLink); // Кнопка скачать
-              actionDiv.appendChild(formatsDiv);  // Текст с форматами
+// Сначала добавляем кнопку для скачивания
+const leftDiv = document.createElement('div');
+leftDiv.classList.add('flex', 'items-center', 'space-x-4');  // flex для кнопки и счетчика, space-x-4 для отступов между элементами
+leftDiv.appendChild(downloadLink);
 
-              fileDiv.appendChild(description);
-              fileDiv.appendChild(imageDiv);
-              imageDiv.appendChild(image);
-              fileDiv.appendChild(actionDiv);  // Добавляем новый блок с кнопкой и форматами
+// Иконка загрузки
+const downloadInfo = document.createElement('div');
+downloadInfo.classList.add('flex', 'items-center', 'text-sm', 'text-gray-500');
 
-              container.appendChild(fileDiv);
-          });
+// Иконка загрузки
+const downloadIcon = document.createElement('i');
+downloadIcon.classList.add('fas', 'fa-download', 'mr-2');  // Иконка загрузки
+downloadInfo.appendChild(downloadIcon);
 
-          currentIndex += filesPerPage;
-          if (currentIndex >= filteredList.length) {
-              document.getElementById('load-more-btn').style.display = 'none';
-          }
+// Текст с количеством скачиваний
+const downloadsDiv = document.createElement('span');
+downloadsDiv.textContent = file.downloads || 0;  // Количество скачиваний
+downloadInfo.appendChild(downloadsDiv);
+
+// Добавляем иконку и счетчик в левый блок
+leftDiv.appendChild(downloadInfo);
+
+// Контейнер для форматов (с текстом или значением по умолчанию)
+const formatsDiv = document.createElement('span');
+formatsDiv.classList.add('text-sm', 'text-gray-500');
+formatsDiv.textContent = file.formats || 'Форматы не указаны';  // Если форматы не указаны, выводим текст "Форматы не указаны"
+
+// Добавляем блок форматов в правую сторону
+const rightDiv = document.createElement('div');
+rightDiv.classList.add('ml-auto');  // Выравнивание вправо
+rightDiv.appendChild(formatsDiv);
+
+// Добавляем все элементы в основной контейнер
+actionDiv.appendChild(leftDiv);
+actionDiv.appendChild(rightDiv);
+
+// Добавляем остальные элементы в файл
+fileDiv.appendChild(description);
+fileDiv.appendChild(imageDiv);
+imageDiv.appendChild(image);
+fileDiv.appendChild(actionDiv);
+
+
+
+          // Добавляем файл в контейнер
+          container.appendChild(fileDiv);
+        });
+
+        currentIndex += filesPerPage;
+        if (currentIndex >= filteredList.length) {
+          document.getElementById('load-more-btn').style.display = 'none';
+        }
       }
 
       function searchFiles() {
-    const searchInput = document.getElementById('search-input');
-    const notification = document.getElementById('notification');
-    const noResultsNotification = document.getElementById('no-results');
-    const loadMoreButton = document.getElementById('load-more-btn');
-    
-    // Проверяем, если поле ввода пустое
-    if (searchInput.value.trim() === "") {
-        // Показываем уведомление о пустом поле
-        notification.classList.remove('hidden');
-        noResultsNotification.classList.add('hidden'); // Скрываем уведомление об отсутствии результатов
-        loadMoreButton.style.display = 'block';  // Показываем кнопку "Загрузить еще"
-        setTimeout(() => {
+        const searchInput = document.getElementById('search-input');
+        const notification = document.getElementById('notification');
+        const noResultsNotification = document.getElementById('no-results');
+        const loadMoreButton = document.getElementById('load-more-btn');
+        
+        // Проверяем, если поле ввода пустое
+        if (searchInput.value.trim() === "") {
+          notification.classList.remove('hidden');
+          noResultsNotification.classList.add('hidden');
+          loadMoreButton.style.display = 'block';
+          setTimeout(() => {
             notification.classList.add('hidden');
-        }, 3000);
-    } else {
-        // Если поле не пустое, скрываем уведомления и начинаем поиск
-        notification.classList.add('hidden');
-        noResultsNotification.classList.add('hidden'); // Скрываем уведомление об отсутствии результатов
-        currentIndex = 0;  // Сброс текущего индекса для нового поиска
-
-        // Фильтруем файлы по запросу
-        filteredFiles = filterFiles(searchInput.value);
-        const container = document.getElementById('file-container');
-        container.innerHTML = ''; // Очищаем контейнер перед новым поиском
-
-        // Если не найдено файлов, показываем уведомление и скрываем кнопку "Загрузить еще"
-        if (filteredFiles.length === 0) {
-            noResultsNotification.classList.remove('hidden');
-            loadMoreButton.style.display = 'none';  // Скрываем кнопку "Загрузить еще"
+          }, 3000);
         } else {
-            noResultsNotification.classList.add('hidden'); // Скрываем уведомление об отсутствии результатов
-            loadMoreButton.style.display = 'block';  // Показываем кнопку "Загрузить еще"
-            loadMoreFiles(filteredFiles);  // Загружаем отфильтрованные файлы
+          notification.classList.add('hidden');
+          noResultsNotification.classList.add('hidden');
+          currentIndex = 0;
+
+          filteredFiles = filterFiles(searchInput.value);
+          const container = document.getElementById('file-container');
+          container.innerHTML = '';
+
+          if (filteredFiles.length === 0) {
+            noResultsNotification.classList.remove('hidden');
+            loadMoreButton.style.display = 'none';
+          } else {
+            noResultsNotification.classList.add('hidden');
+            loadMoreButton.style.display = 'block';
+            loadMoreFiles(filteredFiles);
+          }
         }
-    }
-}
-
-
+      }
 
       window.onload = function() {
-          loadMoreFiles(allFiles);  // Загружаем все файлы при загрузке страницы
+        loadMoreFiles(allFiles);
       };
     </script>
   </head>
   <body class="bg-white text-gray-800 font-sans">
     <h1 class="text-4xl text-center py-10 font-semibold">
-        <a href="{{ url_for('index') }}">
-            <img src="static/logo.svg" class="max-w-[250px] mx-auto" />
-        </a>
+      <a href="{{ url_for('index') }}">
+        <img src="static/logo.svg" class="max-w-[250px] mx-auto" />
+      </a>
     </h1>
 
     <!-- Поле поиска -->
     <div class="container mx-auto px-4 mb-6 text-center">
-        <div class="relative w-full sm:w-1/2 lg:w-1/3 mx-auto">
-            <input id="search-input" type="text" placeholder="Поиск по названию" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-16" />
-            <button onclick="searchFiles()" class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white py-2 px-5 rounded-lg hover:bg-blue-600 transition-all">
-                Найти
-            </button>
-        </div>
+      <div class="relative w-full sm:w-1/2 lg:w-1/3 mx-auto">
+        <input id="search-input" type="text" placeholder="Поиск по названию" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-16" />
+        <button onclick="searchFiles()" class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white py-2 px-5 rounded-lg hover:bg-blue-600 transition-all">
+          Найти
+        </button>
+      </div>
     </div>
 
-   <!-- Уведомление внутри контейнера -->
-<div class="container mx-auto px-4">
-    <div id="notification" class="hidden bg-red-500 text-white text-center py-2 px-4 rounded-lg mt-4 max-w-xl mx-auto">
-        Пожалуйста, введите текст для поиска.
-    </div>
-    <!-- Уведомление об отсутствии результатов -->
-    <div id="no-results" class="hidden bg-yellow-500 text-white text-center py-2 px-4 rounded-lg mt-4 max-w-xl mx-auto">
-        К сожалению, по вашему запросу ничего не найдено.
-    </div>
-</div>
-
+    <!-- Уведомления -->
     <div class="container mx-auto px-4">
-        <div id="file-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      <div id="notification" class="hidden bg-red-500 text-white text-center py-2 px-4 rounded-lg mt-4 max-w-xl mx-auto">
+        Пожалуйста, введите текст для поиска.
+      </div>
+      <div id="no-results" class="hidden bg-yellow-500 text-white text-center py-2 px-4 rounded-lg mt-4 max-w-xl mx-auto">
+        К сожалению, по вашему запросу ничего не найдено.
+      </div>
+    </div>
 
-        <!-- Кнопка для загрузки дополнительных файлов -->
-        <div class="text-center mt-8">
-            <button id="load-more-btn" onclick="loadMoreFiles(filteredFiles)" class="bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-all mb-6">
-                Загрузить еще
-            </button>
-        </div>
+    <!-- Контейнер файлов -->
+    <div class="container mx-auto px-4">
+      <div id="file-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+      <!-- Кнопка для загрузки дополнительных файлов -->
+      <div class="text-center mt-8">
+        <button id="load-more-btn" onclick="loadMoreFiles(filteredFiles)" class="bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-all mb-6">
+          Загрузить еще
+        </button>
+      </div>
     </div>
 
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}").then(function(registration) {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                }).catch(function(error) {
-                    console.log('Service Worker registration failed:', error);
-                });
-            });
-        }
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}").then(function(registration) {
+            console.log('Service Worker registered with scope:', registration.scope);
+          }).catch(function(error) {
+            console.log('Service Worker registration failed:', error);
+          });
+        });
+      }
     </script>
   </body>
 </html>
