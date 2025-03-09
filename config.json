@@ -6,7 +6,7 @@
         "preview": "gerb_kr.jpg",
         "svg": "gerb_kr.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 1
+        "downloads": 0
     },
     {
         "id": 2,
@@ -24,7 +24,7 @@
         "preview": "prokuratura.jpg",
         "svg": "prokuratura.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 1
+        "downloads": 0
     },
     {
         "id": 4,
@@ -33,7 +33,7 @@
         "preview": "gknb.jpg",
         "svg": "gknb.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 1
+        "downloads": 0
     },
     {
         "id": 5,
@@ -42,7 +42,7 @@
         "preview": "mvd.jpg",
         "svg": "mvd.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 1
+        "downloads": 0
     },
     {
         "id": 6,
@@ -87,7 +87,7 @@
         "preview": "mvdur.jpg",
         "svg": "mvdur.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 2
+        "downloads": 0
     },
     {
         "id": 11,
@@ -105,7 +105,7 @@
         "preview": "skorpion.jpg",
         "svg": "skorpion.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 1
+        "downloads": 0
     },
     {
         "id": 13,
@@ -114,7 +114,7 @@
         "preview": "bishkek.jpg",
         "svg": "bishkek.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 4
+        "downloads": 0
     },
     {
         "id": 14,
@@ -123,7 +123,7 @@
         "preview": "institut.jpg",
         "svg": "institut.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 2
+        "downloads": 0
     },
     {
         "id": 15,
@@ -132,7 +132,7 @@
         "preview": "minfin.jpg",
         "svg": "minfin.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 19
+        "downloads": 0
     },
     {
         "id": 16,
@@ -141,7 +141,7 @@
         "preview": "gknbold.jpg",
         "svg": "gknbold.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 4
+        "downloads": 0
     },
     {
         "id": 17,
@@ -159,7 +159,7 @@
         "preview": "minstroy.jpg",
         "svg": "minstroy.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 2
+        "downloads": 0
     },
     {
         "id": 19,
@@ -168,7 +168,7 @@
         "preview": "gerb_romb.jpg",
         "svg": "gerb_romb1.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 2
+        "downloads": 0
     },
     {
         "id": 20,
@@ -249,7 +249,7 @@
         "preview": "ornament_1.jpg",
         "svg": "ornament_1.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 1
+        "downloads": 0
     },
     {
         "id": 29,
@@ -276,7 +276,7 @@
         "preview": "ornament_4.jpg",
         "svg": "ornament_4.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 1
+        "downloads": 0
     },
     {
         "id": 32,
@@ -303,7 +303,7 @@
         "preview": "ornament_6.jpg",
         "svg": "ornament_6.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 1
+        "downloads": 0
     },
     {
         "id": 35,
