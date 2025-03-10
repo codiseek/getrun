@@ -401,7 +401,16 @@
         "description": "МИД КР (ЧБ)",
         "preview": "mid_2.jpg",
         "svg": "mid_2.svg",
-        "formats": "AI / PDF / SVG",
+        "formats": "AI / PDF / SVG / DXF",
         "downloads": 2
+    },
+    {
+        "id": 46,
+        "name": "minselhoz.zip",
+        "description": "МИНСЕЛЬХОЗ (ЦВЕТНОЙ)",
+        "preview": "minselhoz.jpg",
+        "svg": "minselhoz.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
     }
 ]
