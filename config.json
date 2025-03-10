@@ -2,7 +2,7 @@
     {
         "id": 1,
         "name": "gerb_kr.zip",
-        "description": "Герб Кыргызской Республики",
+        "description": "Герб КР (ЧБ)",
         "preview": "gerb_kr.jpg",
         "svg": "gerb_kr.svg",
         "formats": "AI / PDF / SVG",
@@ -385,5 +385,23 @@
         "svg": "gerb_kr_2.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 5
+    },
+    {
+        "id": 44,
+        "name": "mid.zip",
+        "description": "МИД КР (Цветной)",
+        "preview": "mid.jpg",
+        "svg": "mid.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
+    },
+    {
+        "id": 45,
+        "name": "mid_2.zip",
+        "description": "МИД КР (ЧБ)",
+        "preview": "mid_2.jpg",
+        "svg": "mid_2.svg",
+        "formats": "AI / PDF / SVG",
+        "downloads": 0
     }
 ]
