@@ -412,5 +412,14 @@
         "svg": "minselhoz.svg",
         "formats": "AI / PDF / SVG",
         "downloads": 0
+    },
+    {
+        "id": 47,
+        "name": "minjust.zip",
+        "description": "Министерство юстиции КР",
+        "preview": "minjust.jpg",
+        "svg": "minjust.svg",
+        "formats": "AI / PDF / SVG / DXF",
+        "downloads": 0
     }
 ]

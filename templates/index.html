@@ -17,7 +17,7 @@
 
     <script>
         let currentIndex = 0;
-        const filesPerPage = 6;
+        const filesPerPage = 9;
         let allFiles = {{ files | tojson }}; // Получаем все файлы через Jinja (список всех файлов)
         let filteredFiles = allFiles; // Для поиска будем фильтровать файлы, но не очищать основной список
       
