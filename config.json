@@ -330,7 +330,7 @@
         "preview": "polis_academ.jpg",
         "svg": "polis_academ.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 20
+        "downloads": 2
     },
     {
         "id": 38,
@@ -366,7 +366,7 @@
         "preview": "temir_jolu.jpg",
         "svg": "temir_jolu.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 1
+        "downloads": 2
     },
     {
         "id": 42,
@@ -393,7 +393,7 @@
         "preview": "mid.jpg",
         "svg": "mid.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 0
+        "downloads": 2
     },
     {
         "id": 45,
@@ -402,6 +402,6 @@
         "preview": "mid_2.jpg",
         "svg": "mid_2.svg",
         "formats": "AI / PDF / SVG",
-        "downloads": 0
+        "downloads": 2
     }
 ]
